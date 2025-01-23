@@ -6,7 +6,7 @@ services:
     container_name: postgres
     environment:
       POSTGRES_USER: triumph_psql_user
-      POSTGRES_PASSWORD: "_21B-N{6@Fy37D_C9&Aq"
+      POSTGRES_PASSWORD: triumph_psql_password
       POSTGRES_DB: triumph_psql_db
     ports:
       - "5432:5432"
@@ -31,7 +31,7 @@ services:
       dockerfile: Dockerfile
     container_name: service
     environment:
-      DATABASE_URL: postgres://triumph_psql_user:_21B-N{6@Fy37D_C9&Aq@postgres:5432/triumph_psql_db
+      DATABASE_URL: postgres://triumph_psql_user:triumph_psql_password@postgres:5432/triumph_psql_db
       MONGO_URL: mongodb://triumph_mongo_user:05Dr8(3X9pok]=-ON1/&@mongodb:27017
     ports:
       - "3001:3001"
@@ -57,7 +57,7 @@ services:
       dockerfile: Dockerfile
     container_name: testdrives
     environment:
-      DATABASE_URL: postgres://triumph_psql_user:_21B-N{6@Fy37D_C9&Aq@postgres:5432/triumph_psql_db
+      DATABASE_URL: postgres://triumph_psql_user:triumph_psql_password@postgres:5432/triumph_psql_db
       MONGO_URL: mongodb://triumph_mongo_user:05Dr8(3X9pok]=-ON1/&@mongodb:27017
     ports:
       - "3003:3003"
@@ -71,7 +71,7 @@ services:
       dockerfile: Dockerfile
     container_name: admin
     environment:
-      DATABASE_URL: postgres://triumph_psql_user:_21B-N{6@Fy37D_C9&Aq@postgres:5432/triumph_psql_db
+      DATABASE_URL: postgres://triumph_psql_user:triumph_psql_password@postgres:5432/triumph_psql_db
       MONGO_URL: mongodb://triumph_mongo_user:05Dr8(3X9pok]=-ON1/&@mongodb:27017
     ports:
       - "3004:3004"
