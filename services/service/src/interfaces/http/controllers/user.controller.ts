@@ -13,7 +13,7 @@ import {
   UpdateUserDto,
 } from '../../../application/dtos/user.dto';
 
-@Controller('users')
+@Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
