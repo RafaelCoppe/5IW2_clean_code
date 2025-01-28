@@ -15,7 +15,11 @@ export class CompanyRepository {
   }
 
   async findAll(): Promise<Company[]> {
-    return this.repository.find();
+    return this.repository.find({
+      relations: {
+        type_id: true,
+      },
+    });
   }
 
   async findOne(id: string): Promise<Company | null> {

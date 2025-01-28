@@ -1,12 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { CompanyType } from './company-type.entity';
 
 @Entity('company')
 export class Company {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ name: 'type_id', type: 'integer' })
-  type_id: number;
+  @ManyToOne(() => CompanyType, (type) => type.companies)
+  type_id: CompanyType;
 
   @Column({ name: 'address', type: 'varchar', length: 100 })
   address: string;

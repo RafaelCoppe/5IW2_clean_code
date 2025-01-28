@@ -1,6 +1,8 @@
+import { CompanyType } from '../entities/company-type.entity';
+
 export interface ICompany {
   id: string;
-  type_id: number;
+  type_id: CompanyType;
   address: string;
   number: string;
   city: string;

@@ -1,4 +1,5 @@
-import { IsString, IsNotEmpty, Length, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty, Length } from 'class-validator';
+import { CompanyType } from 'src/domain/entities/company-type.entity';
 
 export class CreateCompanyDto {
   @IsString()
@@ -6,9 +7,8 @@ export class CreateCompanyDto {
   @Length(1, 50)
   id: string;
 
-  @IsNumber()
   @IsNotEmpty()
-  type_id: number;
+  type_id: CompanyType;
 
   @IsString()
   @IsNotEmpty()

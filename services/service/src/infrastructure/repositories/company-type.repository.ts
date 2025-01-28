@@ -11,7 +11,11 @@ export class CompanyTypeRepository {
   ) {}
 
   async findAll(): Promise<CompanyType[]> {
-    return this.repository.find();
+    return this.repository.find({
+      relations: {
+        companies: true,
+      },
+    });
   }
 
   async findOne(id: number): Promise<CompanyType | null> {
