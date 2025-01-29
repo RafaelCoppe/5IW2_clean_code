@@ -9,6 +9,6 @@ export class CompanyType {
   @Column({ type: 'varchar', length: 50 })
   name: string;
 
-  @OneToMany(() => Company, (company) => company.type_id)
+  @OneToMany(() => Company, (company) => company.fk_type)
   companies: Company[];
 }

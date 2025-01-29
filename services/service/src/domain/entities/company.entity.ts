@@ -4,6 +4,7 @@ import {
   Column,
   ManyToOne,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { CompanyType } from './company-type.entity';
 import { User } from './user.entity';
@@ -14,7 +15,8 @@ export class Company {
   id: string;
 
   @ManyToOne(() => CompanyType, (type) => type.companies)
-  type_id: CompanyType;
+  @JoinColumn({ name: 'fk_type' })
+  fk_type: CompanyType;
 
   @Column({ name: 'address', type: 'varchar', length: 100 })
   address: string;
@@ -46,6 +48,6 @@ export class Company {
   @Column({ name: 'contact_phone', type: 'varchar', length: 50 })
   contact_phone: string;
 
-  @OneToMany(() => User, (user) => user.company_id)
+  @OneToMany(() => User, (user) => user.fk_company)
   users: User[];
 }

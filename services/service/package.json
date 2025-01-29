@@ -20,7 +20,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "migration:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate -d ./ormconfig.ts",
     "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run -d ./ormconfig.ts",
-    "migration:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert -d ./ormconfig.ts"
+    "migration:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert -d ./ormconfig.ts",
+    "seeding": "docker exec -i postgres psql -U triumph_psql_user triumph_psql_db < seeding.sql"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.15",

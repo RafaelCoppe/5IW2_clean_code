@@ -17,7 +17,7 @@ export class UserRepository {
   async findAll(): Promise<User[]> {
     return this.repository.find({
       relations: {
-        company_id: true,
+        fk_company: true,
       },
     });
   }

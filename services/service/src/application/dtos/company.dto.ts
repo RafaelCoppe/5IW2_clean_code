@@ -8,7 +8,7 @@ export class CreateCompanyDto {
   id: string;
 
   @IsNotEmpty()
-  type_id: CompanyType;
+  fk_type: CompanyType;
 
   @IsString()
   @IsNotEmpty()

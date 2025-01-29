@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Company } from './company.entity';
 
 @Entity('user')
@@ -25,7 +25,8 @@ export class User {
   isActive: boolean;
 
   @ManyToOne(() => Company, (company) => company.users)
-  company_id: Company;
+  @JoinColumn({ name: 'fk_company' })
+  fk_company: Company;
 
   @Column({ name: 'is_admin', type: 'boolean', default: false })
   is_admin: boolean;

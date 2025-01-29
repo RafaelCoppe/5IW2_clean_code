@@ -10,6 +10,10 @@ export class CompanyTypeRepository {
     private readonly repository: Repository<CompanyType>,
   ) {}
 
+  async create(companyType: CompanyType): Promise<CompanyType> {
+    return this.repository.save(companyType);
+  }
+
   async findAll(): Promise<CompanyType[]> {
     return this.repository.find();
   }

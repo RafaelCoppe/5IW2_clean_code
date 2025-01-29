@@ -6,6 +6,6 @@ export interface IUser {
   email: string;
   phone: string;
   password: string;
-  company_id: Company;
+  fk_company: Company;
   is_admin: boolean;
 }

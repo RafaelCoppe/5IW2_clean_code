@@ -6,6 +6,10 @@ import { CompanyType } from '../../domain/entities/company-type.entity';
 export class CompanyTypeService {
   constructor(private readonly companyTypeRepository: CompanyTypeRepository) {}
 
+  async createCompanyType(companyType: CompanyType): Promise<CompanyType> {
+    return this.companyTypeRepository.create(companyType);
+  }
+
   async getCompanyTypes(): Promise<CompanyType[]> {
     return this.companyTypeRepository.findAll();
   }
