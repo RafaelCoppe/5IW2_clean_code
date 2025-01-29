@@ -15,7 +15,11 @@ export class UserRepository {
   }
 
   async findAll(): Promise<User[]> {
-    return this.repository.find();
+    return this.repository.find({
+      relations: {
+        company_id: true,
+      },
+    });
   }
 
   async findOne(id: string): Promise<User | null> {

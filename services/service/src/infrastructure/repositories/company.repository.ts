@@ -8,7 +8,7 @@ export class CompanyRepository {
   constructor(
     @InjectRepository(Company)
     private readonly repository: Repository<Company>,
-  ) {}
+  ) { }
 
   async create(company: Partial<Company>): Promise<Company> {
     return this.repository.save(company);
@@ -23,7 +23,12 @@ export class CompanyRepository {
   }
 
   async findOne(id: string): Promise<Company | null> {
-    return this.repository.findOne({ where: { id } });
+    return this.repository.findOne({
+      where: { id },
+      relations: {
+        type_id: true,
+      },
+    });
   }
 
   async update(id: string, company: Partial<Company>): Promise<void> {
