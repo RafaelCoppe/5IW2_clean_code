@@ -1,7 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { Company } from './company.entity';
 
-@Entity('user')
+@Entity('app_user')
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;

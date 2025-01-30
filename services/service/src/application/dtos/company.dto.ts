@@ -7,6 +7,11 @@ export class CreateCompanyDto {
   @Length(1, 50)
   id: string;
 
+  @IsString()
+  @IsNotEmpty()
+  @Length(1, 100)
+  name: string;
+
   @IsNotEmpty()
   fk_type: CompanyType;
 
@@ -29,16 +34,6 @@ export class CreateCompanyDto {
   @IsNotEmpty()
   @Length(1, 50)
   citycode: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @Length(1, 100)
-  mail: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @Length(1, 50)
-  phone: string;
 
   @IsString()
   @IsNotEmpty()
