@@ -11,4 +11,8 @@ export class SparePartCompanyService {
   async getSparePartsCompany(company_id: string): Promise<SparePartCompany[]> {
     return this.sparePartCompanyRepository.find(company_id);
   }
+
+  async updateStock(id: string, stock: number): Promise<void> {
+    return this.sparePartCompanyRepository.updateStock(id, stock);
+  }
 }

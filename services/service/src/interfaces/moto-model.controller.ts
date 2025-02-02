@@ -18,8 +18,8 @@ export class MotoModelController {
   constructor(private readonly motoModelService: MotoModelService) {}
 
   @Post()
-  async createMotoModel(@Body() createUserDto: CreateMotoModelDto) {
-    return this.motoModelService.createMotoModel(createUserDto);
+  async createMotoModel(@Body() createMotoModelDto: CreateMotoModelDto) {
+    return this.motoModelService.createMotoModel(createMotoModelDto);
   }
 
   @Get()
@@ -35,9 +35,9 @@ export class MotoModelController {
   @Patch(':id')
   async updateMotoModel(
     @Param('id') id: number,
-    @Body() updateUserDto: UpdateMotoModelDto,
+    @Body() updateMotoModelDto: UpdateMotoModelDto,
   ) {
-    await this.motoModelService.updateMotoModel(id, updateUserDto);
+    await this.motoModelService.updateMotoModel(id, updateMotoModelDto);
     return { message: `MotoModel with ID ${id} updated successfully` };
   }
 
