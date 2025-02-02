@@ -15,11 +15,24 @@ export class MotoRepository {
   }
 
   async findAll(): Promise<Moto[]> {
-    return this.repository.find();
+    return this.repository.find({
+      relations: {
+        fk_model: true,
+        fk_dealer: true,
+        fk_owner: true,
+      },
+    });
   }
 
   async findOne(id: string): Promise<Moto | null> {
-    return this.repository.findOne({ where: { id } });
+    return this.repository.findOne({
+      where: { id },
+      relations: {
+        fk_model: true,
+        fk_dealer: true,
+        fk_owner: true,
+      },
+    });
   }
 
   async update(id: string, moto: Partial<Moto>): Promise<void> {

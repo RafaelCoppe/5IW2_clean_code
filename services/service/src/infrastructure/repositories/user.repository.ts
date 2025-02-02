@@ -18,12 +18,16 @@ export class UserRepository {
     return this.repository.find({
       relations: {
         fk_company: true,
+        motos: true,
       },
     });
   }
 
   async findOne(id: string): Promise<User | null> {
-    return this.repository.findOne({ where: { id } });
+    return this.repository.findOne({
+      where: { id },
+      relations: { fk_company: true, motos: true },
+    });
   }
 
   async update(id: string, user: Partial<User>): Promise<void> {

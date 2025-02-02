@@ -8,9 +8,9 @@ INSERT INTO company (id, name, fk_type, address, number, city, citycode, contact
   , ('9521c673-3135-4512-bf8b-5809b18eef3a', 'SAS livraisons Didier', 2, 'rue de la République', '10', 'Marseille', '13000', 'Henry', 'Didier', 'henry.didier.livraison@gmail.com', '03 44 53 64 93');
 
 -- Utilisateurs
-INSERT INTO app_user (first_name, last_name, email, phone, password, fk_company) 
-  VALUES ('Jean', 'Druet', 'jeandruet@voituresdruet.com', '01 02 03 04 05', 'password123', '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8')
-  , ('Henry', 'Didier', 'henry.didier.livraison@gmail.com', '03 44 53 64 93', 'password123', '9521c673-3135-4512-bf8b-5809b18eef3a');
+INSERT INTO app_user (id, first_name, last_name, email, phone, password, fk_company) 
+  VALUES ('fb913537-12cf-446c-88d0-1d1e9cb2e24b', 'Jean', 'Druet', 'jeandruet@voituresdruet.com', '01 02 03 04 05', 'password123', '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8') -- Concessionnaire
+  , ('be326539-c9de-4dcb-a979-1933995e9df4', 'Henry', 'Didier', 'henry.didier.livraison@gmail.com', '03 44 53 64 93', 'password123', '9521c673-3135-4512-bf8b-5809b18eef3a'); -- Partenaire
 
 
 -- Catégories de modèles de moto
@@ -37,7 +37,7 @@ INSERT INTO moto_model (id, label, fk_category) VALUES (1, 'TIGER 1200 RANGE', 1
   , (11, 'SPEED TRIPLE 1200 RR', 4); -- ROADSTERS
 
 -- Moto
-INSERT INTO moto (id, fk_model, serial_number, price, color, capacity, year, warranty_end, next_service_date, next_service_distance)
-  VALUES ('15e425bd-4565-41e7-85e5-0f8bdf42d536', 1, 'T1200-2', 12000, 'Noir mat', 20, 2021, '2023-01-01', '2025-09-01', 55000)
-  , ('02c65295-0e7a-48ea-85d5-56c4bb2456c4', 5, 'S400-1', 23000, 'Bleu roi', 25, 2023, '2025-01-01', '2027-11-01', 60000)
-  , ('0d985b74-7326-4b54-8d3f-a677e089bdc1', 10, 'T660-5', 20000, 'Ambre', 20, 2022, '2024-01-01' , '2026-03-01', 50000);
+INSERT INTO moto (id, fk_model, serial_number, price, color, capacity, year, warranty_end, next_service_date, next_service_distance, fk_dealer, fk_owner)
+  VALUES ('15e425bd-4565-41e7-85e5-0f8bdf42d536', 1, 'T1200-2', 12000, 'Noir mat', 20, 2021, '2023-01-01', '2025-09-01', 55000, '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8', NULL)
+  , ('02c65295-0e7a-48ea-85d5-56c4bb2456c4', 5, 'S400-1', 23000, 'Bleu roi', 25, 2023, '2025-01-01', '2027-11-01', 60000, '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8', 'be326539-c9de-4dcb-a979-1933995e9df4')
+  , ('0d985b74-7326-4b54-8d3f-a677e089bdc1', 10, 'T660-5', 20000, 'Ambre', 20, 2022, '2024-01-01' , '2026-03-01', 50000, '6e7f2bb7-411d-4cf4-9f6e-cc51ca726143', NULL);

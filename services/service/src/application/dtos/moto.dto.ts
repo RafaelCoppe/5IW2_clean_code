@@ -5,7 +5,9 @@ import {
   IsString,
   Length,
 } from 'class-validator';
+import { Company } from 'src/domain/entities/company.entity';
 import { MotoModel } from 'src/domain/entities/moto-model.entity';
+import { User } from 'src/domain/entities/user.entity';
 
 export class CreateMotoDto {
   @IsNumber()
@@ -43,6 +45,11 @@ export class CreateMotoDto {
 
   @IsNumber()
   next_service_distance: number;
+
+  @IsNotEmpty()
+  fk_dealer: Company;
+
+  fk_owner?: User;
 }
 
 export class UpdateMotoDto extends CreateMotoDto {}

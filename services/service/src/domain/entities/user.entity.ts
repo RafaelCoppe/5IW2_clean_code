@@ -4,8 +4,10 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { Company } from './company.entity';
+import { Moto } from './moto.entity';
 
 @Entity('app_user')
 export class User {
@@ -36,4 +38,7 @@ export class User {
 
   @Column({ name: 'is_admin', type: 'boolean', default: false })
   is_admin: boolean;
+
+  @OneToMany(() => Moto, (moto) => moto.fk_owner)
+  motos: Moto[];
 }

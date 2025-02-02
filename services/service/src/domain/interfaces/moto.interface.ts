@@ -11,4 +11,6 @@ export interface IMoto {
   warranty_end: Date;
   next_service_date: Date;
   next_service_distance: number;
+  fk_dealer: string;
+  fk_owner?: string;
 }

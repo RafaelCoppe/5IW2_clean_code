@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { CompanyType } from './company-type.entity';
 import { User } from './user.entity';
+import { Moto } from './moto.entity';
 
 @Entity('company')
 export class Company {
@@ -44,6 +45,9 @@ export class Company {
 
   @Column({ name: 'contact_phone', type: 'varchar', length: 50 })
   contact_phone: string;
+
+  @OneToMany(() => Moto, (moto) => moto.fk_dealer)
+  motos: Moto[];
 
   @OneToMany(() => User, (user) => user.fk_company)
   users: User[];

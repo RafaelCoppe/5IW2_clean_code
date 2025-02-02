@@ -6,6 +6,8 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { MotoModel } from './moto-model.entity';
+import { User } from './user.entity';
+import { Company } from './company.entity';
 
 @Entity('moto')
 export class Moto {
@@ -39,4 +41,12 @@ export class Moto {
 
   @Column({ name: 'next_service_distance', type: 'integer' })
   next_service_distance: number;
+
+  @ManyToOne(() => Company, (owner) => owner.id)
+  @JoinColumn({ name: 'fk_dealer' })
+  fk_dealer: Company;
+
+  @ManyToOne(() => User, (owner) => owner.id)
+  @JoinColumn({ name: 'fk_owner' })
+  fk_owner: User;
 }

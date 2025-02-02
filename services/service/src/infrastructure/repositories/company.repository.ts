@@ -18,6 +18,7 @@ export class CompanyRepository {
     return this.repository.find({
       relations: {
         fk_type: true,
+        motos: true,
       },
     });
   }
@@ -27,6 +28,7 @@ export class CompanyRepository {
       where: { id },
       relations: {
         fk_type: true,
+        motos: true,
       },
     });
   }
