@@ -39,31 +39,6 @@ services:
       - postgres
       - mongodb
 
-  # Microservice Parts - Express
-  parts:
-    build:
-      context: ./services/parts
-      dockerfile: Dockerfile
-    container_name: parts
-    ports:
-      - "3002:3002"
-    depends_on:
-      - postgres
-
-  # Microservice Essais - Express
-  testdrives:
-    build:
-      context: ./services/testdrives
-      dockerfile: Dockerfile
-    container_name: testdrives
-    environment:
-      DATABASE_URL: postgres://triumph_psql_user:triumph_psql_password@postgres:5432/triumph_psql_db
-      MONGO_URL: mongodb://triumph_mongo_user:05Dr8(3X9pok]=-ON1/&@mongodb:27017
-    ports:
-      - "3003:3003"
-    depends_on:
-      - postgres
-
   # Microservice Admin - NestJs
   admin:
     build:
