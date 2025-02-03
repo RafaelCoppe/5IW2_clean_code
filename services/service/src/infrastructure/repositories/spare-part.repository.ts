@@ -14,7 +14,7 @@ export class SparePartRepository {
     return this.repository.find();
   }
 
-  async findOne(id: string): Promise<SparePart | null> {
+  async findOne(id: number): Promise<SparePart | null> {
     return this.repository.findOne({
       where: { id },
     });

@@ -10,7 +10,7 @@ export class SparePartService {
     return this.sparePartRepository.findAll();
   }
 
-  async getSparePartById(id: string): Promise<SparePart> {
+  async getSparePartById(id: number): Promise<SparePart> {
     const spare_part = await this.sparePartRepository.findOne(id);
     if (!spare_part) {
       throw new NotFoundException(`SparePart with ID ${id} not found`);

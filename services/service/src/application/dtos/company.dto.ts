@@ -4,11 +4,6 @@ import { CompanyType } from 'src/domain/entities/company-type.entity';
 export class CreateCompanyDto {
   @IsString()
   @IsNotEmpty()
-  @Length(1, 50)
-  id: string;
-
-  @IsString()
-  @IsNotEmpty()
   @Length(1, 100)
   name: string;
 

@@ -45,4 +45,14 @@ INSERT INTO moto (id, fk_model, serial_number, price, color, capacity, year, war
 -- Pièces détachées
 INSERT INTO spare_part (id, label, picture_link) 
   VALUES (1, 'Bougie', 'spare_parts/bougies.png'), (2, 'Chaine', 'spare_parts/chaine.png')
-  , (3, 'Pignon', 'spare_parts/pignon.png'), (4, 'Bobine', 'spare_parts/bobine.png') 
+  , (3, 'Pignon', 'spare_parts/pignon.png'), (4, 'Bobine', 'spare_parts/bobine.png');
+
+-- Pièces détachées : Company
+INSERT INTO spare_part_company (fk_part, fk_company, stock)
+  VALUES (1, '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8', 10), (2, '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8', 5), (3, '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8', 3), (4, '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8', 7)
+  , (1, '6e7f2bb7-411d-4cf4-9f6e-cc51ca726143', 5), (2, '6e7f2bb7-411d-4cf4-9f6e-cc51ca726143', 3), (3, '6e7f2bb7-411d-4cf4-9f6e-cc51ca726143', 2), (4, '6e7f2bb7-411d-4cf4-9f6e-cc51ca726143', 4);
+
+-- Pièces détachées : Commandes
+INSERT INTO spare_part_command (id, fk_spare_part, fk_company, remaining_quantity, ordered_quantity, total_price, date_order, date_received)
+VALUES (1, 1, '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8', 2, 10, 233.99, '2022-01-01', '2022-01-10'), (2, 4, '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8', 5, 5, 50.00, '2022-01-01', '2022-01-10')
+  , (3, 3, '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8', 1, 5, 100.00, '2022-01-01', '2022-01-10'), (4, 2, '6e7f2bb7-411d-4cf4-9f6e-cc51ca726143', 3, 5, 150.00, '2022-01-01', '2022-01-10');

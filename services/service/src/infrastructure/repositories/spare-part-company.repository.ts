@@ -10,9 +10,16 @@ export class SparePartCompanyRepository {
     private readonly repository: Repository<SparePartCompany>,
   ) {}
 
-  async find(company_id: string): Promise<SparePartCompany[] | null> {
+  async findByCompanyId(id: string): Promise<SparePartCompany[]> {
     return this.repository.find({
-      where: { company_id },
+      where: {
+        fk_company: {
+          id,
+        },
+      },
+      relations: {
+        fk_part: true,
+      },
     });
   }
 

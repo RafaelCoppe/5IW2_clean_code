@@ -6,13 +6,13 @@ import { Company } from './company.entity';
 export class SparePartCompany {
   @PrimaryColumn()
   @ManyToOne(() => SparePart, (spare_part) => spare_part.id)
-  @JoinColumn({ name: 'part_id' })
-  part_id: SparePart;
+  @JoinColumn({ name: 'fk_part' })
+  fk_part: SparePart;
 
   @PrimaryColumn()
   @ManyToOne(() => Company, (company) => company.id)
-  @JoinColumn({ name: 'company_id' })
-  company_id: string;
+  @JoinColumn({ name: 'fk_company' })
+  fk_company: Company;
 
   @Column({ name: 'stock', type: 'integer', default: 0 })
   stock: number;

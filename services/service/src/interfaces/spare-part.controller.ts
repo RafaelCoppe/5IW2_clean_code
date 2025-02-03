@@ -11,7 +11,7 @@ export class SparePartController {
   }
 
   @Get(':id')
-  async getSparePartById(@Param('id') id: string) {
+  async getSparePartById(@Param('id') id: number) {
     return this.sparePartService.getSparePartById(id);
   }
 }
