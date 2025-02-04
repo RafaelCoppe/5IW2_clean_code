@@ -54,5 +54,13 @@ INSERT INTO spare_part_company (fk_part, fk_company, stock)
 
 -- Pièces détachées : Commandes
 INSERT INTO spare_part_command (id, fk_spare_part, fk_company, remaining_quantity, ordered_quantity, total_price, date_order, date_received)
-VALUES (1, 1, '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8', 2, 10, 233.99, '2022-01-01', '2022-01-10'), (2, 4, '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8', 5, 5, 50.00, '2022-01-01', '2022-01-10')
+  VALUES (1, 1, '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8', 2, 10, 233.99, '2022-01-01', '2022-01-10'), (2, 4, '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8', 5, 5, 50.00, '2022-01-01', '2022-01-10')
   , (3, 3, '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8', 1, 5, 100.00, '2022-01-01', '2022-01-10'), (4, 2, '6e7f2bb7-411d-4cf4-9f6e-cc51ca726143', 3, 5, 150.00, '2022-01-01', '2022-01-10');
+
+-- Réparations moto
+INSERT INTO moto_service (id, fk_moto, date, cost, note)
+  VALUES (1, '15e425bd-4565-41e7-85e5-0f8bdf42d536', '2022-01-01', 200, 'Réparation de la roue arrière'), (2, '15e425bd-4565-41e7-85e5-0f8bdf42d536', '2022-01-01', 100, 'Réparation de la roue avant');
+
+-- Panne moto
+INSERT INTO moto_breakdown (id, fk_moto, date, note)
+  VALUES (1, '15e425bd-4565-41e7-85e5-0f8bdf42d536', '2022-01-01', 'Panne de la roue arrière'), (2, '15e425bd-4565-41e7-85e5-0f8bdf42d536', '2022-01-01', 'Panne de la roue avant');
