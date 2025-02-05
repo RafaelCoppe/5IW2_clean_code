@@ -63,6 +63,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ isAdmin }) => {
           )}
           <li>
             <Link
+            to="/companies"
+            className="block p-2 rounded-lg hover:bg-gray-700"
+            >
+                Gestion des entreprises
+            </Link>
+          </li>
+          <li>
+            <Link
               to="/notifications"
               className="block p-2 rounded-lg hover:bg-gray-700"
             >

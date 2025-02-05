@@ -6,8 +6,9 @@ import Maintenance from "../pages/maintenance/MaintenancePage";
 import SpareParts from "../pages/spareParts/SpareParts";
 import MaintenanceDetailsPage from "../pages/maintenance/MaintenanceDetailsPage";
 import MaintenanceFormPage from "../pages/maintenance/MaintenanceFormPage";
-import TestDrives from "../pages/testDrive/TestDrives";
+import TestDrives from "../pages/testDrive/TestDrive";
 import Users from "../pages/user/Users";
+import Companies from "../pages/company/Company";
 import Notifications from "../pages/notification/Notifications";
 // import Settings from "../pages/Settings";
 import { Sidebar } from "./Sidebar";
@@ -17,6 +18,16 @@ import MotorcycleDetails from "../pages/motorcycle/MotorcycleDetails";
 import PlanMaintenance from "../pages/maintenance/PlanMaintenance";
 import SparePartFormPage from "../pages/spareParts/SparePartFormPage";
 import SparePartEditPage from "../pages/spareParts/SparePartEditPage";
+
+import UserFormPage from "../pages/user/UserFormPage";
+import UserEditPage from "../pages/user/UserEditPage";
+
+import TestDriveFormPage from "../pages/testDrive/TestDriveFormPage";
+import TestDriveEditPage from "../pages/testDrive/TestDriveEditPage";
+
+import CompanyFormPage from "../pages/company/CompanyFormPage";
+import CompanyEditPage from "../pages/company/CompanyEditPage";
+
 
 const AppLayout: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
   return (
@@ -56,7 +67,17 @@ const AppLayout: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
               element={<SparePartEditPage />}
             />
             <Route path="/test-drives" element={<TestDrives />} />
+            <Route path="/test-drives/add" element={<TestDriveFormPage />} />
+            <Route path="/test-drives/edit/:id" element={<TestDriveEditPage />} />
+
             {isAdmin && <Route path="/users" element={<Users />} />}
+            <Route path="/users/add" element={<UserFormPage />} />
+            <Route path="/users/edit/:id" element={<UserEditPage />} />
+
+            <Route path="/companies" element={<Companies />} />
+            <Route path="/companies/add" element={<CompanyFormPage />} />
+            <Route path="/companies/edit/:id" element={<CompanyEditPage />} />
+            
             <Route path="/notifications" element={<Notifications />} />
             {/* <Route path="/settings" element={<Settings />} /> */}
           </Routes>
