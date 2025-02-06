@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Equal, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SparePartCompany } from '../../domain/entities/spare-part-company.entity';
 
@@ -13,9 +13,7 @@ export class SparePartCompanyRepository {
   async findByCompanyId(id: string): Promise<SparePartCompany[]> {
     return this.repository.find({
       where: {
-        fk_company: {
-          id,
-        },
+        fk_company: Equal(id),
       },
       relations: {
         fk_part: true,
