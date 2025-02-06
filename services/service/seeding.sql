@@ -70,3 +70,20 @@ INSERT INTO moto_breakdown (id, fk_moto, date, note)
 
 INSERT INTO moto_breakdown_spare_part 
   VALUES (1, 1), (1, 2), (2, 2), (2, 3);
+
+-- Driver status
+INSERT INTO driver_status (id, name)
+  VALUES (1, 'Autorisé'), (2, 'Suspendu'), (3, 'En attente');
+
+-- Drivers
+INSERT INTO driver (fk_user, fk_status, license_link, experience)
+  VALUES ('be326539-c9de-4dcb-a979-1933995e9df4', 1, 'licenses/permis_henry_didier.png', 'Pilote expérimenté, conduit chaque jour depuis 8 ans');
+
+-- Test drive
+INSERT INTO test_drive (id, fk_driver, fk_moto, date, duration) 
+  VALUES (1, 'be326539-c9de-4dcb-a979-1933995e9df4', '15e425bd-4565-41e7-85e5-0f8bdf42d536', '2023-05-12', 60)
+  , (2, 'be326539-c9de-4dcb-a979-1933995e9df4', '02c65295-0e7a-48ea-85d5-56c4bb2456c4', '2023-05-17', 40);
+
+-- Test drive incident
+INSERT INTO test_drive_incident (id, incident, fk_test_drive)
+  VALUES (1, 'A percuté un autre usager de la route qui roulait en excès de vitesse', 1), (2, 'Panne du calculateur survenue durant le test', 1);

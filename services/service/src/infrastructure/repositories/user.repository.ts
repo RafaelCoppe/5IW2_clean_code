@@ -19,6 +19,7 @@ export class UserRepository {
       relations: {
         fk_company: true,
         motos: true,
+        driver: true,
       },
     });
   }
@@ -26,7 +27,7 @@ export class UserRepository {
   async findOne(id: string): Promise<User | null> {
     return this.repository.findOne({
       where: { id },
-      relations: { fk_company: true, motos: true },
+      relations: { fk_company: true, motos: true, driver: true },
     });
   }
 

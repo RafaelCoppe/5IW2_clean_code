@@ -5,9 +5,11 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
+  OneToOne,
 } from 'typeorm';
 import { Company } from './company.entity';
 import { Moto } from './moto.entity';
+import { Driver } from './driver.entity';
 
 @Entity('app_user')
 export class User {
@@ -41,4 +43,7 @@ export class User {
 
   @OneToMany(() => Moto, (moto) => moto.fk_owner)
   motos: Moto[];
+
+  @OneToOne(() => Driver, (driver) => driver.fk_user)
+  driver: Driver;
 }
