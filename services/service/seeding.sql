@@ -61,6 +61,12 @@ INSERT INTO spare_part_command (id, fk_spare_part, fk_company, remaining_quantit
 INSERT INTO moto_service (id, fk_moto, date, cost, note)
   VALUES (1, '15e425bd-4565-41e7-85e5-0f8bdf42d536', '2022-01-01', 200, 'Réparation de la roue arrière'), (2, '15e425bd-4565-41e7-85e5-0f8bdf42d536', '2022-01-01', 100, 'Réparation de la roue avant');
 
+INSERT INTO moto_service_spare_part 
+  VALUES (1, 3), (2, 1), (2, 2), (2, 3);
+
 -- Panne moto
 INSERT INTO moto_breakdown (id, fk_moto, date, note)
   VALUES (1, '15e425bd-4565-41e7-85e5-0f8bdf42d536', '2022-01-01', 'Panne de la roue arrière'), (2, '15e425bd-4565-41e7-85e5-0f8bdf42d536', '2022-01-01', 'Panne de la roue avant');
+
+INSERT INTO moto_breakdown_spare_part 
+  VALUES (1, 1), (1, 2), (2, 2), (2, 3);

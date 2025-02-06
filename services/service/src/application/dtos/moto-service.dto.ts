@@ -1,5 +1,6 @@
-import { IsNotEmpty, IsNumber, Length } from 'class-validator';
+import { IsArray, IsNotEmpty, IsNumber, Length } from 'class-validator';
 import { Moto } from 'src/domain/entities/moto.entity';
+import { SparePart } from 'src/domain/entities/spare-part.entity';
 
 export class CreateMotoServiceDto {
   @IsNumber()
@@ -16,6 +17,9 @@ export class CreateMotoServiceDto {
   @IsNotEmpty()
   @Length(1, 255)
   note: string;
+
+  @IsArray()
+  fk_parts: SparePart[];
 }
 
 export class UpdateMotoServiceDto extends CreateMotoServiceDto {}

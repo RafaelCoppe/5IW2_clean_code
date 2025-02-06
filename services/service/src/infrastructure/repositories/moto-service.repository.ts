@@ -1,23 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MotoService } from 'src/domain/entities/moto-service.entity';
-import { Repository } from 'typeorm';
+import { SparePart } from 'src/domain/entities/spare-part.entity';
+import { In, Repository } from 'typeorm';
 
 @Injectable()
 export class MotoServiceRepository {
   constructor(
     @InjectRepository(MotoService)
     private readonly repository: Repository<MotoService>,
+
+    @InjectRepository(SparePart)
+    private readonly sparePartRepository: Repository<SparePart>,
   ) {}
 
-  async create(moto: Partial<MotoService>): Promise<MotoService> {
-    return this.repository.save(moto);
+  async create(service: Partial<MotoService>): Promise<MotoService> {
+    const spareParts = await this.sparePartRepository.findBy({
+      id: In([...service.fk_parts]),
+    });
+
+    service.fk_parts = spareParts;
+
+    return this.repository.save(service);
   }
 
   async findByMoto(): Promise<MotoService[]> {
     return this.repository.find({
       relations: {
         fk_moto: true,
+        fk_parts: true,
       },
     });
   }
@@ -27,12 +38,19 @@ export class MotoServiceRepository {
       where: { id },
       relations: {
         fk_moto: true,
+        fk_parts: true,
       },
     });
   }
 
-  async update(id: number, moto: Partial<MotoService>): Promise<void> {
-    await this.repository.update(id, moto);
+  async update(id: number, service: Partial<MotoService>): Promise<void> {
+    const spareParts = await this.sparePartRepository.findBy({
+      id: In([...service.fk_parts]),
+    });
+
+    service.fk_parts = spareParts;
+
+    await this.repository.update(id, service);
   }
 
   async delete(id: number): Promise<void> {
