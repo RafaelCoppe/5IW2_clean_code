@@ -16,7 +16,7 @@ export class TestDriveIncidentController {
     return this.testDriveIncidentService.getTestDriveIncidentById(id);
   }
 
-  @Get('testdrive/:td_id')
+  @Get('driver/:td_id')
   async getTestDriveByDriver(@Param('td_id') td_id: number) {
     return this.testDriveIncidentService.findByTestDrive(td_id);
   }
