@@ -1,111 +1,121 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  fetchSparePartById,
+  updateSparePart,
+  fetchSparePartStock,
+  SparePart,
+} from "../../services/sparePartService";
+
+const COMPANY_ID = 1; // Simule l'ID de l'entreprise actuelle
 
 const SparePartEditPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>(); // Récupération de l'ID
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    price: "",
-    stock: "",
-    threshold: "",
+
+  const [formData, setFormData] = useState<Omit<SparePart, "id">>({
+    label: "",
+    pictureLink: "",
   });
 
-  // Charger les données existantes (simulation)
+  const [stock, setStock] = useState<number | null>(null);
+  const [price, setPrice] = useState<number>(0);
+
+  // ✅ Charger les données si on est en mode édition
   useEffect(() => {
-    // Simule les données existantes
-    const simulatedPart = {
-      id: id,
-      name: "Filtre à huile",
-      description: "Filtre pour moteur",
-      price: "25",
-      stock: "15",
-      threshold: "5",
-    };
-    setFormData(simulatedPart);
+    if (id) {
+      const part = fetchSparePartById(Number(id));
+      if (part) {
+        setFormData(part);
+        const stockInfo = fetchSparePartStock(Number(id), COMPANY_ID);
+        setStock(stockInfo ? stockInfo.stock : null);
+      }
+    }
   }, [id]);
 
+  // ✅ Gestion de la soumission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Modifications sauvegardées :", formData);
-    navigate("/spare-parts"); // Redirige vers la liste après la sauvegarde
+    if (id) {
+      updateSparePart(Number(id), formData, COMPANY_ID, price);
+    }
+    navigate("/spare-parts");
   };
 
   return (
-    <div className="p-4 bg-gray-100 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6">Modifier une pièce détachée</h1>
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-4 bg-white shadow-md rounded-lg p-4"
-      >
-        <div>
-          <label className="block text-sm font-medium mb-2">Nom</label>
-          <input
-            type="text"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="w-full border p-2 rounded-md"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-2">Description</label>
-          <textarea
-            value={formData.description}
-            onChange={(e) =>
-              setFormData({ ...formData, description: e.target.value })
-            }
-            className="w-full border p-2 rounded-md"
-          ></textarea>
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-2">Prix (€)</label>
-          <input
-            type="number"
-            value={formData.price}
-            onChange={(e) =>
-              setFormData({ ...formData, price: e.target.value })
-            }
-            className="w-full border p-2 rounded-md"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            Stock initial
-          </label>
-          <input
-            type="number"
-            value={formData.stock}
-            onChange={(e) =>
-              setFormData({ ...formData, stock: e.target.value })
-            }
-            className="w-full border p-2 rounded-md"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            Seuil critique
-          </label>
-          <input
-            type="number"
-            value={formData.threshold}
-            onChange={(e) =>
-              setFormData({ ...formData, threshold: e.target.value })
-            }
-            className="w-full border p-2 rounded-md"
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-green-600 text-white p-2 rounded-md hover:bg-green-500"
+    <div className="p-6 bg-gray-100 min-h-screen flex items-center justify-center">
+      <div className="w-full max-w-5xl bg-white shadow-lg rounded-lg p-8">
+        <h1 className="text-3xl font-bold mb-6 text-gray-800">
+          Modifier une pièce détachée
+        </h1>
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
         >
-          Sauvegarder
-        </button>
-      </form>
+          {/* Nom */}
+          <div>
+            <label className="block font-medium mb-1">Nom de la pièce</label>
+            <input
+              type="text"
+              value={formData.label}
+              onChange={(e) =>
+                setFormData({ ...formData, label: e.target.value })
+              }
+              className="w-full border p-3 rounded-md"
+              required
+            />
+          </div>
+
+          {/* Lien image */}
+          <div>
+            <label className="block font-medium mb-1">Lien de l'image</label>
+            <input
+              type="text"
+              value={formData.pictureLink}
+              onChange={(e) =>
+                setFormData({ ...formData, pictureLink: e.target.value })
+              }
+              className="w-full border p-3 rounded-md"
+            />
+          </div>
+
+          {/* Prix */}
+          <div>
+            <label className="block font-medium mb-1">Prix (€)</label>
+            <input
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(Number(e.target.value))}
+              className="w-full border p-3 rounded-md"
+              required
+            />
+          </div>
+
+          {/* Stock actuel */}
+          {id && stock !== null && (
+            <div className="col-span-2 p-4 bg-gray-50 border rounded-md">
+              <span className="font-medium">Stock actuel :</span> {stock} unités
+            </div>
+          )}
+
+          {/* Boutons */}
+          <div className="col-span-2 flex justify-between mt-6">
+            <button
+              type="button"
+              onClick={() => navigate("/spare-parts")}
+              className="bg-gray-500 text-white px-6 py-3 rounded-md hover:bg-gray-700 transition"
+            >
+              Annuler
+            </button>
+            <button
+              type="submit"
+              className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-500 transition"
+            >
+              Modifier
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

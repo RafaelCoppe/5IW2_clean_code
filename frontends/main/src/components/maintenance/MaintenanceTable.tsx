@@ -1,18 +1,19 @@
 import React from "react";
+import { MaintenanceTableProps } from "../../types/Maintenance";
 
-interface Maintenance {
-  id: number;
-  motoId: number;
-  date: string;
-  type: "preventive" | "curative";
-  cost?: number;
-  notes?: string;
-}
+// interface Maintenance {
+//   id: number;
+//   motoId: number;
+//   date: string;
+//   type: "preventive" | "curative";
+//   cost?: number;
+//   notes?: string;
+// }
 
-interface MaintenanceTableProps {
-  maintenances: Maintenance[];
-  motoId?: number; // Prop optionnelle pour filtrer par moto
-}
+// interface MaintenanceTableProps {
+//   maintenances: Maintenance[];
+//   motoId?: number; // Prop optionnelle pour filtrer par moto
+// }
 
 const MaintenanceTable: React.FC<MaintenanceTableProps> = ({
   maintenances,

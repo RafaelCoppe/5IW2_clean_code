@@ -1,3 +1,8 @@
+export interface MaintenanceTableProps {
+  maintenances: Maintenance[];
+  motoId?: number; // Prop optionnelle pour filtrer par moto
+}
+
 export interface Maintenance {
   id: number;
   motoId: number;
