@@ -1,57 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useApi } from "../../context/ApiContext";
 
 export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
-  const [motorcycles, setMotorcycles] = useState([
-    {
-      id: 1,
-      model: "Street Triple",
-      serialNumber: "STR12345",
-      owner: "Partner A",
-      color: "Black",
-      capacity: 765,
-      year: 2023,
-      lastService: "2024-12-01",
-      nextService: "2025-12-01",
-    },
-    {
-      id: 2,
-      model: "Tiger Sport 660",
-      serialNumber: "TSP98765",
-      owner: "Dealer B",
-      color: "Red",
-      capacity: 660,
-      year: 2022,
-      lastService: "2024-10-15",
-      nextService: "2025-10-15",
-    },
-    {
-      id: 2,
-      model: "Tiger Sport 660",
-      serialNumber: "TSP98765",
-      owner: "Dealer A",
-      color: "Red",
-      capacity: 660,
-      year: 2022,
-      lastService: "2024-10-15",
-      nextService: "2025-10-15",
-    },
-    // Autres motos...
-  ]);
+  const api = useApi();
+  const [motorcycles, setMotorcycles] = useState([]);
 
-  // Filtrer les motos selon le rôle
-  // const filteredMotorcycles =
-  //   userRole === "admin"
-  //     ? motorcycles // Admin voit tout
-  //     : motorcycles.filter((moto) =>
-  //         userRole === "dealer"
-  //           ? moto.owner === "Dealer B"
-  //           : moto.owner === "Partner A"
-  //       ); // Dealer ou Partner voit ses propres motos
+  useEffect(() => {
+    api.get("moto")
+      .then((data) => setMotorcycles(data))
+      .catch(console.error);
+  }, [api]);
 
   return (
     <div className="p-4 bg-white shadow-md rounded-lg">
-      <h1 className="text-2xl font-bold mb-4">Motorcycles Management</h1>
+      <h1 className="text-2xl font-bold mb-4">Gestion des motos</h1>
       {userRole === "admin" && (
         <Link
           to="/motorcycles/add"
@@ -65,6 +28,7 @@ export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
           <tr className="bg-gray-100">
             <th className="border px-4 py-2">Model</th>
             <th className="border px-4 py-2">Serial Number</th>
+            <th className="border px-4 py-2">Dealer</th>
             <th className="border px-4 py-2">Owner</th>
             <th className="border px-4 py-2">Actions</th>
           </tr>
@@ -72,9 +36,10 @@ export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
         <tbody>
           {motorcycles.map((moto) => (
             <tr key={moto.id}>
-              <td className="border px-4 py-2">{moto.model}</td>
-              <td className="border px-4 py-2">{moto.serialNumber}</td>
-              <td className="border px-4 py-2">{moto.owner}</td>
+              <td className="border px-4 py-2">{moto.fk_model ? moto.fk_model.label : ''}</td>
+              <td className="border px-4 py-2">{moto.serial_number}</td>
+              <td className="border px-4 py-2">{moto.fk_dealer ? moto.fk_dealer.name : ''}</td>
+              <td className="border px-4 py-2">{moto.fk_owner ? (moto.fk_owner.last_name.toUpperCase() + ' ' + moto.fk_owner.first_name) : ''}</td>
               <td className="border px-4 py-2">
                 <Link
                   to={`/motorcycles/${moto.id}`}
