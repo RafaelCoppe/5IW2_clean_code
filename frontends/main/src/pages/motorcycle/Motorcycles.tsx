@@ -8,7 +8,7 @@ export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
 
   useEffect(() => {
     api.get("moto")
-      .then((data) => setMotorcycles(data))
+      .then((response) => setMotorcycles(response.data))
       .catch(console.error);
   }, [api]);
 
