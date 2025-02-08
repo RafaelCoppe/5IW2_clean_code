@@ -18,7 +18,7 @@ const SparePartsListPage: React.FC = () => {
 
   useEffect(() => {
     api.get("spare_part", { credentials: 'include' })
-        .then((data) => setSpareParts(data))
+        .then((response) => setSpareParts(response.data))
         .catch(console.error);
   }, [api]);
 

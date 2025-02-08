@@ -1,41 +1,78 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useApi } from "../../context/ApiContext";
+
+interface CompanyType {
+  id: number;
+  name: string;
+}
 
 const CompanyEditPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const api = useApi();
   const [formData, setFormData] = useState({
     name: '',
-    type: '',
-    mail: '',
-    phone: '',
+    fk_type: { id: '', name: '' },
+    number: '',
+    address: '',
+    city: '',
+    citycode: '',
     contact_first_name: '',
     contact_last_name: '',
     contact_mail: '',
     contact_phone: '',
   });
 
-  // Load existing company data (simulation)
-  useEffect(() => {
-    // Simulate existing company data
-    const simulatedCompany = {
-      id: id,
-      name: 'Company A',
-      type: 'Type A',
-      mail: 'companya@example.com',
-      phone: '1234567890',
-      contact_first_name: 'John',
-      contact_last_name: 'Doe',
-      contact_mail: 'john.doe@example.com',
-      contact_phone: '0987654321',
-    };
-    setFormData(simulatedCompany);
-  }, [id]);
+  const [companyTypes, setCompanyTypes] = useState<CompanyType[]>([]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    // Fetch existing company data from the API
+    api.get(`company/${id}`, { credentials: 'include' })
+      .then((response) => {
+        const { name, fk_type, number, address, city, citycode, contact_first_name, contact_last_name, contact_mail, contact_phone } = response.data;
+        setFormData({ name, fk_type, number, address, city, citycode, contact_first_name, contact_last_name, contact_mail, contact_phone });
+      })
+      .catch(console.error);
+
+    // Fetch company types from the API
+    api.get('company_type', { credentials: 'include' })
+      .then((response) => setCompanyTypes(response.data))
+      .catch(console.error);
+  }, [id, api]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Modifications sauvegardées :', formData);
-    navigate('/companies'); // Redirect to the list after saving
+    try {
+      const dataToSend = {
+        name: formData.name,
+        fk_type: {
+          id: parseInt(formData.fk_type.id, 10),
+          name: formData.fk_type.name,
+        },
+        number: formData.number,
+        address: formData.address,
+        city: formData.city,
+        citycode: formData.citycode,
+        contact_first_name: formData.contact_first_name,
+        contact_last_name: formData.contact_last_name,
+        contact_mail: formData.contact_mail,
+        contact_phone: formData.contact_phone,
+      };
+      console.log('Submitting form data:', JSON.stringify(dataToSend, null, 2)); // Log form data for debugging
+      const response = await api.patch(`company/${id}`, dataToSend);
+      if (response.status === 200) {
+        console.log('Entreprise mise à jour :', dataToSend);
+        navigate('/companies'); // Return to the list after submission
+      } else {
+        const errorText = await response.data;
+        console.error('Erreur lors de la mise à jour de l\'entreprise:', errorText);
+        alert('Erreur lors de la mise à jour de l\'entreprise.');
+      }
+    } catch (error) {
+      console.error('Erreur :', error);
+      alert('Erreur lors de la mise à jour de l\'entreprise.');
+    }
   };
 
   return (
@@ -54,30 +91,59 @@ const CompanyEditPage: React.FC = () => {
         </div>
         <div>
           <label className="block text-sm font-medium mb-2">Type</label>
+          <select
+            value={formData.fk_type.id}
+            onChange={(e) => {
+              const selectedType = companyTypes.find(type => type.id === parseInt(e.target.value, 10));
+              setFormData({ ...formData, fk_type: { id: e.target.value, name: selectedType ? selectedType.name : '' } });
+            }}
+            className="w-full border p-2 rounded-md"
+            required
+          >
+            <option value="">Sélectionnez un type</option>
+            {companyTypes.map((type) => (
+              <option key={type.id} value={type.id}>
+                {type.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-2">Numéro</label>
           <input
             type="text"
-            value={formData.type}
-            onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+            value={formData.number}
+            onChange={(e) => setFormData({ ...formData, number: e.target.value })}
             className="w-full border p-2 rounded-md"
             required
           />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-2">Email</label>
+          <label className="block text-sm font-medium mb-2">Adresse</label>
           <input
-            type="email"
-            value={formData.mail}
-            onChange={(e) => setFormData({ ...formData, mail: e.target.value })}
+            type="text"
+            value={formData.address}
+            onChange={(e) => setFormData({ ...formData, address: e.target.value })}
             className="w-full border p-2 rounded-md"
             required
           />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-2">Téléphone</label>
+          <label className="block text-sm font-medium mb-2">Ville</label>
           <input
             type="text"
-            value={formData.phone}
-            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            value={formData.city}
+            onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+            className="w-full border p-2 rounded-md"
+            required
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-2">Code postal</label>
+          <input
+            type="text"
+            value={formData.citycode}
+            onChange={(e) => setFormData({ ...formData, citycode: e.target.value })}
             className="w-full border p-2 rounded-md"
             required
           />

@@ -26,7 +26,7 @@ const Company: React.FC = () => {
 
   useEffect(() => {
     api.get("company", { credentials: 'include' })
-        .then((data) => setCompanies(data))
+        .then((response) => setCompanies(response.data))
         .catch(console.error);
   }, [api]);
 
@@ -35,12 +35,11 @@ const Company: React.FC = () => {
     if (window.confirm('Voulez-vous vraiment supprimer cette entreprise ?')) {
       try {
         const response = await api.delete(`company/${id}`);
-        debugger;
         if (response.status === 200 ) {
           setCompanies(companies.filter((company) => company.id !== id)); // Delete locally
           console.log('Entreprise supprimée :', id);
         } else {
-          const errorText = await response.text();
+          const errorText = response.data;
           console.error('Erreur lors de la suppression de l\'entreprise:', errorText);
           alert('Erreur lors de la suppression de l\'entreprise.');
         }

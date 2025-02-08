@@ -1,22 +1,21 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useApi } from "../../context/ApiContext";
 
 interface Motorcycle {
-    id: number;
-    serial_number: string;
-    fk_model: {
-      label: string;
-    } | null;
-    fk_dealer: {
-      name: string;
-    } | null;
-    fk_owner: {
-      first_name: string;
-      last_name: string;
-    } | null;
-  }
+  id: number;
+  serial_number: string;
+  fk_model: {
+    label: string;
+  } | null;
+  fk_dealer: {
+    name: string;
+  } | null;
+  fk_owner: {
+    first_name: string;
+    last_name: string;
+  } | null;
+}
 
 export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
   const api = useApi();
@@ -25,13 +24,26 @@ export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
 
   useEffect(() => {
     api.get("moto", { credentials: 'include' })
-        .then((data) => setMotorcycles(data))
-        .catch(console.error);
+      .then((response) => setMotorcycles(response.data))
+      .catch(console.error);
   }, [api]);
 
-  const handleDelete = (id: number) => {
-    if (window.confirm("Voulez-vous vraiment supprimer cet utilisateur ?")) {
-      setMotorcycles(motorcycles.filter((moto) => moto.id !== id)); // Delete locally
+  const handleDelete = async (id: number) => {
+    if (window.confirm("Voulez-vous vraiment supprimer cette moto ?")) {
+      try {
+        const response = await api.delete(`moto/${id}`);
+        if (response.status === 200) {
+          setMotorcycles(motorcycles.filter((moto) => moto.id !== id)); // Delete locally
+          console.log('Moto supprimée :', id);
+        } else {
+          const errorText = await response.data;
+          console.error('Erreur lors de la suppression de la moto:', errorText);
+          alert('Erreur lors de la suppression de la moto.');
+        }
+      } catch (error) {
+        console.error('Erreur :', error);
+        alert('Erreur lors de la suppression de la moto.');
+      }
     }
   };
 
@@ -78,7 +90,7 @@ export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
                 <td className="border px-4 py-2">{moto.fk_dealer ? moto.fk_dealer.name : ''}</td>
                 <td className="border px-4 py-2">{moto.fk_owner ? (moto.fk_owner.last_name.toUpperCase() + ' ' + moto.fk_owner.first_name) : ''}</td>
                 <td className="border px-4 py-2">
-                <button
+                  <button
                     onClick={() => handleEdit(moto.id)}
                     className="bg-blue-600 text-white px-3 py-1 rounded mr-2 hover:bg-blue-500"
                   >

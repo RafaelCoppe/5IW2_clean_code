@@ -7,7 +7,7 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = ({ isAdmin }) => {
   return (
-    <aside className="h-screen w-64 bg-gray-900 text-white flex flex-col">
+    <aside className="fixed h-screen w-64 bg-gray-900 text-white flex flex-col">
       <div className="p-4 text-xl font-bold">Triumph Fleet</div>
       <nav className="flex-1 mt-4">
         <ul className="space-y-2">
@@ -63,10 +63,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isAdmin }) => {
           )}
           <li>
             <Link
-            to="/companies"
-            className="block p-2 rounded-lg hover:bg-gray-700"
+              to="/companies"
+              className="block p-2 rounded-lg hover:bg-gray-700"
             >
-                Gestion des entreprises
+              Gestion des entreprises
             </Link>
           </li>
           <li>

@@ -28,7 +28,7 @@ const CompanyFormPage: React.FC = () => {
   useEffect(() => {
     // Fetch company types from the API
     api.get('company_type', { credentials: 'include' })
-      .then((data) => setCompanyTypes(data))
+      .then((response) => setCompanyTypes(response.data))
       .catch(console.error);
   }, [api]);
 
