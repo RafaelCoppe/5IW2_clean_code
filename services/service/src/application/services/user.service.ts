@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { UserRepository } from '../../infrastructure/repositories/user.repository';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 import { User } from '../../domain/entities/user.entity';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 
 @Injectable()
@@ -13,19 +13,19 @@ export class UserService {
     plainPassword: string,
     hashedPassword: string,
   ): Promise<boolean | void> {
-    bcrypt.compare(plainPassword, hashedPassword, function (err, result) {
-      if (err) {
-        throw new NotFoundException('Invalid password');
-      }
-      return result;
-    });
+    return await bcrypt.compare(plainPassword, hashedPassword);
   }
 
   generateToken(user: User): string {
     const payload = {
       email: user.email,
       password: user.password,
-      fk_type: user.fk_company?.fk_type || null,
+      name: user.last_name + ' ' + user.first_name,
+      company: {
+        id: user.fk_company.id,
+        name: user.fk_company.name,
+        type: user.fk_company.fk_type.name,
+      },
     };
 
     return jwt.sign(payload, process.env.JWT_SECRET_KEY, {
@@ -43,8 +43,9 @@ export class UserService {
       throw new NotFoundException(`User with email ${email} not found`);
     }
 
-    await this.validatePassword(password, user.password);
-
+    if (!(await this.validatePassword(password, user.password))) {
+      throw new NotFoundException('Invalid password');
+    }
     // Générer un token
     const token = this.generateToken(user);
     user.token = token;

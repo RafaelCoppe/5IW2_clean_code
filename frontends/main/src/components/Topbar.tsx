@@ -1,9 +1,12 @@
 import { Bell, Search, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../services/store";
 
 export const TopBar: React.FC = () => {
   const [unreadCount, setUnreadCount] = useState(0);
+  const user = useSelector((state: RootState) => state.auth.user);
 
   useEffect(() => {
     // Simulate fetching unread notifications count
@@ -33,7 +36,7 @@ export const TopBar: React.FC = () => {
         </div>
         <div className="flex items-center gap-2 cursor-pointer">
           <User className="w-6 h-6" />
-          <Link to="/login">Se connecter</Link>
+          <Link to="">{user ? user.name : "Votre compte"}</Link>
         </div>
       </div>
     </header>
