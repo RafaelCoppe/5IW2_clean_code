@@ -9,10 +9,11 @@ import { DriverController } from 'src/interfaces/driver.controller';
 import { DriverRepository } from '../repositories/driver.repository';
 import { DriverService } from 'src/application/services/driver.service';
 import { DriverStatus } from 'src/domain/entities/driver-status.entity';
+import { LoginController } from 'src/interfaces/login.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Driver, DriverStatus])],
-  controllers: [UserController, DriverController],
+  controllers: [UserController, DriverController, LoginController],
   providers: [UserRepository, UserService, DriverRepository, DriverService],
 })
 export class UserModule {}
