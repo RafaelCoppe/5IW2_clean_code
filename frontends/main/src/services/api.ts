@@ -12,8 +12,7 @@ class ApiClient {
 
   // Méthode pour effectuer une requête GET
   async get(url: string, params: object = {}) {
-    const response = await this.client.get(url, { params })
-    return response.data
+    return await this.client.get(url, { params })
   }
 
   // Méthode pour effectuer une requête POST
@@ -23,20 +22,17 @@ class ApiClient {
 
   // Méthode pour effectuer une requête PATCH
   async patch(url: string, data: object = {}) {
-    const response = await this.client.patch(url, data)
-    return response.data
+    return await this.client.patch(url, data)
   }
 
   // Méthode pour effectuer une requête PUT
   async put(url: string, data: object = {}) {
-    const response = await this.client.put(url, data)
-    return response.data
+    return await this.client.put(url, data)
   }
 
   // Méthode pour effectuer une requête DELETE
   async delete(url: string) {
-    const response = await this.client.delete(url)
-    return response.data
+    return await this.client.delete(url)
   }
 
   // Méthode pour login l'utilisateur
