@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useApi } from "../../context/ApiContext";
 
 interface Company {
   id: number;
   name: string;
-  type: string;
-  mail: string;
-  phone: string;
+  fk_type: {
+    id: number;
+    name: string;
+  };
+  number: number;
+  address: string;
+  city: string;
+  citycode: string;
   contact_first_name: string;
   contact_last_name: string;
   contact_mail: string;
@@ -16,43 +22,32 @@ interface Company {
 const Company: React.FC = () => {
   const [companies, setCompanies] = useState<Company[]>([]);
   const navigate = useNavigate();
+  const api = useApi();
 
-  // Simulate fetching companies data
   useEffect(() => {
-    const fetchCompanies = () => {
-      const simulatedData: Company[] = [
-        {
-          id: 1,
-          name: 'Company A',
-          type: 'Type A',
-          mail: 'companya@example.com',
-          phone: '1234567890',
-          contact_first_name: 'John',
-          contact_last_name: 'Doe',
-          contact_mail: 'john.doe@example.com',
-          contact_phone: '0987654321',
-        },
-        {
-          id: 2,
-          name: 'Company B',
-          type: 'Type B',
-          mail: 'companyb@example.com',
-          phone: '1234567890',
-          contact_first_name: 'Jane',
-          contact_last_name: 'Doe',
-          contact_mail: 'jane.doe@example.com',
-          contact_phone: '0987654321',
-        },
-      ];
-      setCompanies(simulatedData);
-    };
-    fetchCompanies();
-  }, []);
+    api.get("company", { credentials: 'include' })
+        .then((data) => setCompanies(data))
+        .catch(console.error);
+  }, [api]);
 
   // Handle delete company
-  const handleDelete = (id: number) => {
+  const handleDelete = async (id: number) => {
     if (window.confirm('Voulez-vous vraiment supprimer cette entreprise ?')) {
-      setCompanies(companies.filter((company) => company.id !== id)); // Delete locally
+      try {
+        const response = await api.delete(`company/${id}`);
+        debugger;
+        if (response.status === 200 ) {
+          setCompanies(companies.filter((company) => company.id !== id)); // Delete locally
+          console.log('Entreprise supprimée :', id);
+        } else {
+          const errorText = await response.text();
+          console.error('Erreur lors de la suppression de l\'entreprise:', errorText);
+          alert('Erreur lors de la suppression de l\'entreprise.');
+        }
+      } catch (error) {
+        console.error('Erreur :', error);
+        alert('Erreur lors de la suppression de l\'entreprise.');
+      }
     }
   };
 
@@ -80,7 +75,7 @@ const Company: React.FC = () => {
       <div className="flex justify-end mb-4">
         <button
           onClick={handleAdd}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-500"
+          className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-blue-500"
         >
           Ajouter une entreprise
         </button>
@@ -99,8 +94,7 @@ const Company: React.FC = () => {
             <tr>
               <th className="border px-4 py-2">Nom</th>
               <th className="border px-4 py-2">Type</th>
-              <th className="border px-4 py-2">Email</th>
-              <th className="border px-4 py-2">Téléphone</th>
+              <th className="border px-4 py-2">Adresse</th>
               <th className="border px-4 py-2">Contact</th>
               <th className="border px-4 py-2">Actions</th>
             </tr>
@@ -109,9 +103,10 @@ const Company: React.FC = () => {
             {companies.map((company) => (
               <tr key={company.id}>
                 <td className="border px-4 py-2">{company.name}</td>
-                <td className="border px-4 py-2">{company.type}</td>
-                <td className="border px-4 py-2">{company.mail}</td>
-                <td className="border px-4 py-2">{company.phone}</td>
+                <td className="border px-4 py-2">{company.fk_type.name}</td>
+                <td className="border px-4 py-2">
+                  {company.number} {company.address}, {company.city} {company.citycode}
+                </td>
                 <td className="border px-4 py-2">
                   {company.contact_first_name} {company.contact_last_name} - {company.contact_mail} - {company.contact_phone}
                 </td>

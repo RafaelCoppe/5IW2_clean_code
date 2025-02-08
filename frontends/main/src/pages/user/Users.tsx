@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { useApi } from "../../context/ApiContext";
 
 interface User {
   id: number;
-  name: string;
+  last_name: string;
+  first_name: string;
   email: string;
   role: string;
 }
@@ -11,28 +13,13 @@ interface User {
 const Users: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const navigate = useNavigate();
+  const api = useApi();
 
-  // Simulate fetching users data
   useEffect(() => {
-    const fetchUsers = () => {
-      const simulatedData: User[] = [
-        {
-          id: 1,
-          name: "John Doe",
-          email: "john.doe@example.com",
-          role: "Admin",
-        },
-        {
-          id: 2,
-          name: "Jane Doe",
-          email: "jane.doe@example.com",
-          role: "User",
-        },
-      ];
-      setUsers(simulatedData);
-    };
-    fetchUsers();
-  }, []);
+    api.get("user", { credentials: 'include' })
+        .then((data) => setUsers(data))
+        .catch(console.error);
+  }, [api]);
 
   // Handle delete user
   const handleDelete = (id: number) => {
@@ -65,7 +52,7 @@ const Users: React.FC = () => {
       <div className="flex justify-end mb-4">
         <button
           onClick={handleAdd}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-500"
+          className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500"
         >
           Ajouter un utilisateur
         </button>
@@ -83,6 +70,7 @@ const Users: React.FC = () => {
           <thead className="bg-gray-100">
             <tr>
               <th className="border px-4 py-2">Nom</th>
+              <th className="border px-4 py-2">Prénom</th>
               <th className="border px-4 py-2">Email</th>
               <th className="border px-4 py-2">Rôle</th>
               <th className="border px-4 py-2">Actions</th>
@@ -91,7 +79,8 @@ const Users: React.FC = () => {
           <tbody>
             {users.map((user) => (
               <tr key={user.id}>
-                <td className="border px-4 py-2">{user.name}</td>
+                <td className="border px-4 py-2">{user.last_name}</td>
+                <td className="border px-4 py-2">{user.first_name}</td>
                 <td className="border px-4 py-2">{user.email}</td>
                 <td className="border px-4 py-2">{user.role}</td>
                 <td className="border px-4 py-2">
