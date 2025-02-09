@@ -36,11 +36,8 @@ class ApiClient {
   }
 
   // Méthode pour login l'utilisateur
-  async login(login: string, password: object = {}) {
-    return await this.client.post('/login', {
-      login: login,
-      password: password
-    })
+  async login(email: string, password: string) {
+    return await this.client.post('login', { email, password })
   }
 }
 

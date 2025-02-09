@@ -23,7 +23,7 @@ export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
   const [motorcycles, setMotorcycles] = useState<Motorcycle[]>([]);
 
   useEffect(() => {
-    api.get("moto", { credentials: 'include' })
+    api.get("moto")
       .then((response) => setMotorcycles(response.data))
       .catch(console.error);
   }, [api]);

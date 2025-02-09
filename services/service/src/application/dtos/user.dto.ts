@@ -28,7 +28,7 @@ export class CreateUserDto {
   password: string;
 
   @IsNotEmpty()
-  company_id: Company;
+  fk_company: Company;
 
   @IsBoolean()
   @IsNotEmpty()

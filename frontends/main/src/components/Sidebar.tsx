@@ -5,6 +5,11 @@ interface SidebarProps {
   isAdmin: boolean; // Prop pour savoir si l'utilisateur est admin
 }
 
+const handleDisconnect = () => {
+  localStorage.removeItem('token');
+  window.location.reload();
+}
+
 export const Sidebar: React.FC<SidebarProps> = ({ isAdmin }) => {
   return (
     <aside className="fixed h-screen w-64 bg-gray-900 text-white flex flex-col">
@@ -96,7 +101,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isAdmin }) => {
         </ul>
       </nav>
       <div className="p-4 mt-auto">
-        <button className="w-full p-2 bg-red-600 rounded-lg hover:bg-red-500">
+        <button className="w-full p-2 bg-red-600 rounded-lg hover:bg-red-500" onClick={() => handleDisconnect()}>
           Déconnexion
         </button>
       </div>

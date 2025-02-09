@@ -46,4 +46,6 @@ export class User {
 
   @OneToOne(() => Driver, (driver) => driver.fk_user)
   driver: Driver;
+
+  token: string;
 }

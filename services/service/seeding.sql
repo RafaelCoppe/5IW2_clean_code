@@ -9,8 +9,8 @@ INSERT INTO company (id, name, fk_type, address, number, city, citycode, contact
 
 -- Utilisateurs
 INSERT INTO app_user (id, first_name, last_name, email, phone, password, fk_company) 
-  VALUES ('fb913537-12cf-446c-88d0-1d1e9cb2e24b', 'Jean', 'Druet', 'jeandruet@voituresdruet.com', '01 02 03 04 05', 'password123', '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8') -- Concessionnaire
-  , ('be326539-c9de-4dcb-a979-1933995e9df4', 'Henry', 'Didier', 'henry.didier.livraison@gmail.com', '03 44 53 64 93', 'password123', '9521c673-3135-4512-bf8b-5809b18eef3a'); -- Partenaire
+  VALUES ('fb913537-12cf-446c-88d0-1d1e9cb2e24b', 'Jean', 'Druet', 'jeandruet@voituresdruet.com', '01 02 03 04 05', '$2y$10$44C.N29pcYNMIvDQaJ8LEeHB5GoYpic9LyiVNN/5/spsrRVSPqI.C', '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8') -- Concessionnaire
+  , ('be326539-c9de-4dcb-a979-1933995e9df4', 'Henry', 'Didier', 'henry.didier.livraison@gmail.com', '03 44 53 64 93', '$2y$10$44C.N29pcYNMIvDQaJ8LEeHB5GoYpic9LyiVNN/5/spsrRVSPqI.C', '9521c673-3135-4512-bf8b-5809b18eef3a'); -- Partenaire
 
 
 -- Catégories de modèles de moto
