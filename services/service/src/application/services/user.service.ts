@@ -18,10 +18,11 @@ export class UserService {
 
   generateToken(user: User): string {
     const payload = {
+      id: user.id,
       email: user.email,
       password: user.password,
       name: user.last_name + ' ' + user.first_name,
-      company: {
+      fk_company: {
         id: user.fk_company.id,
         name: user.fk_company.name,
         type: user.fk_company.fk_type.name,

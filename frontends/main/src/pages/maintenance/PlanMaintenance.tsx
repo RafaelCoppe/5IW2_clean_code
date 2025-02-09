@@ -1,49 +1,53 @@
 import React, { useState, useEffect } from "react";
-import { MotoModelService } from "../../types/Maintenance";
+import { useNavigate, useParams } from "react-router-dom";
+import { useApi } from "../../context/ApiContext";
+import { useSelector } from "react-redux";
+import { RootState } from "../../services/store";
+import Select from 'react-select'
 
 const PlanMaintenance: React.FC = () => {
-  const [models, setModels] = useState<MotoModelService[]>([]);
-  const [selectedModel, setSelectedModel] = useState<number | null>(null);
-  const [lastServiceDate, setLastServiceDate] = useState("");
-  const [lastDistance, setLastDistance] = useState<number>(0);
-  const [nextServiceDate, setNextServiceDate] = useState<string>("");
-  const [nextDistance, setNextDistance] = useState<number | null>(null);
+  const { id } = useParams<{ id: string }>();
+
+  const [date, setDate] = useState("");
+  const [cost, setCost] = useState(0);
+  const [note, setNote] = useState("");
+  const [parts, setParts] = useState<number[]>([]);
+  const [companyParts, setCompanyParts] = useState([]);
+
+  const api = useApi();
+  const navigate = useNavigate();
+
+  const user = useSelector((state: RootState) => state.auth.user);
+  const company_id = user.fk_company.id;
 
   // Charger les modèles et leurs intervalles
   useEffect(() => {
-    const fetchModels = async () => {
-      // Simule un appel API
-      const data = [
-        { id: 1, distanceInterval: 10000, timeInterval: 12, price: 200 },
-        { id: 2, distanceInterval: 16000, timeInterval: 24, price: 300 },
-      ];
-      setModels(data);
-    };
-
-    fetchModels();
-  }, []);
-
-  // Calcul de la prochaine date et distance d'entretien
-  useEffect(() => {
-    if (selectedModel !== null) {
-      const model = models.find((m) => m.id === selectedModel);
-      if (model && lastServiceDate) {
-        const nextDate = new Date(lastServiceDate);
-        nextDate.setMonth(nextDate.getMonth() + model.timeInterval);
-        setNextServiceDate(nextDate.toISOString().split("T")[0]);
-        setNextDistance(lastDistance + model.distanceInterval);
-      }
-    }
-  }, [selectedModel, lastServiceDate, lastDistance, models]);
+    api.get("spare_part_company/" + company_id)
+      .then((response) => setCompanyParts(response.data))
+      .catch(console.error);
+  }, [api, company_id]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({
-      modelId: selectedModel,
-      nextServiceDate,
-      nextDistance,
-    });
-    alert("Entretien planifié avec succès !");
+
+    const api_call_data = {
+      fk_moto: {
+        id: id
+      },
+      date: date,
+      cost: cost,
+      note: note
+    }
+
+    const formatted_parts = parts.map(part => part.value);
+
+    api_call_data.fk_parts = formatted_parts;
+
+    api.post("moto_service", api_call_data)
+      .then(() => {
+        navigate(`/maintenances`);
+      })
+      .catch(console.error);
   };
 
   return (
@@ -52,52 +56,52 @@ const PlanMaintenance: React.FC = () => {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium mb-2">
-            Modèle de moto
-          </label>
-          <select
-            className="w-full border p-2 rounded-md"
-            value={selectedModel || ""}
-            onChange={(e) => setSelectedModel(Number(e.target.value))}
-          >
-            <option value="" disabled>
-              Choisir un modèle
-            </option>
-            {models.map((model) => (
-              <option key={model.id} value={model.id}>
-                Modèle {model.id} (Intervalle : {model.distanceInterval} km,{" "}
-                {model.timeInterval} mois)
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-2">
             Date du dernier entretien
           </label>
           <input
             type="date"
             className="w-full border p-2 rounded-md"
-            value={lastServiceDate}
-            onChange={(e) => setLastServiceDate(e.target.value)}
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
           />
         </div>
         <div>
           <label className="block text-sm font-medium mb-2">
-            Kilométrage actuel
+            Coût
           </label>
           <input
             type="number"
             className="w-full border p-2 rounded-md"
-            value={lastDistance}
-            onChange={(e) => setLastDistance(Number(e.target.value))}
+            value={cost}
+            onChange={(e) => setCost(Number(e.target.value))}
           />
         </div>
-        {nextServiceDate && nextDistance && (
-          <div className="mt-4 bg-gray-100 p-4 rounded-md">
-            <p>Prochaine date d'entretien : {nextServiceDate}</p>
-            <p>Prochain kilométrage d'entretien : {nextDistance} km</p>
-          </div>
-        )}
+        <div>
+          <label className="block text-sm font-medium mb-2">
+            Note
+          </label>
+          <textarea
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            className="w-full border p-2 rounded-md"
+            required
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-2">
+            Pièces détachées
+          </label>
+          <Select
+            className="w-full border p-2 rounded-md"
+            value={parts}
+            isMulti // Permet la sélection multiple
+            onChange={(selectedOptions) => setParts(selectedOptions)}
+            options={companyParts.map((part) => ({
+              value: part.fk_part.id,
+              label: `${part.fk_part.label} - Stock : ${part.stock}`,
+            }))}
+          />
+        </div>
         <button
           type="submit"
           className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-500"

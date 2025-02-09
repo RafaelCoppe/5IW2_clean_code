@@ -4,11 +4,13 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { MotoModel } from './moto-model.entity';
 import { User } from './user.entity';
 import { Company } from './company.entity';
 import { MotoModelService } from './moto-model-service.entity';
+import { MotoService } from './moto-service.entity';
 
 @Entity('moto')
 export class Moto {
@@ -49,4 +51,7 @@ export class Moto {
   @ManyToOne(() => User, (owner) => owner.id)
   @JoinColumn({ name: 'fk_owner' })
   fk_owner: User;
+
+  @OneToMany(() => MotoService, (service) => service.fk_moto)
+  services: MotoService[];
 }

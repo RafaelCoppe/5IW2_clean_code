@@ -1,72 +1,63 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useApi } from "../../context/ApiContext";
+import { useSelector } from "react-redux";
+import { RootState } from "../../services/store";
 import MaintenanceTable from "../../components/maintenance/MaintenanceTable";
-import { fetchMaintenances } from "../../services/maintenanceService";
-import { Maintenance } from "../../types/Maintenance";
 
 const MaintenancePage: React.FC = () => {
-  const [maintenances, setMaintenances] = useState<Maintenance[]>([]);
+  const [motos, setMotos] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const user = useSelector((state: RootState) => state.auth.user);
+  const company_type = user.fk_company.type;
+
   const navigate = useNavigate();
+  const api = useApi();
 
   useEffect(() => {
-    const loadMaintenances = async () => {
-      try {
-        const data = await fetchMaintenances();
-        setMaintenances(data);
-        toast.success("Entretiens chargés avec succès !");
-      } catch (error) {
-        toast.error("Erreur lors du chargement des entretiens.");
-      } finally {
-        setLoading(false);
-      }
-    };
+    api.get("moto/" + (company_type == "Concessionnaire" ? "dealer/" + user.fk_company.id : "owner/" + user.id))
+      .then((response) => setMotos(response.data))
+      .catch(console.error);
 
-    loadMaintenances();
-  }, []);
+    setLoading(false);
+  }, [api, company_type, user.fk_company.id, user.id]);
 
-  const handleEdit = (id: number) => {
-    navigate(`/maintenances/${id}/edit`);
-  };
-
-  const handleAdd = () => {
-    navigate(`/maintenances/add`);
-  };
-
-  const handleDeleteAll = () => {
-    if (window.confirm("Voulez-vous vraiment supprimer tous les entretiens ?")) {
-      setMaintenances([]); // Delete all locally
-    }
+  const handleAdd = (moto_id) => {
+    navigate(`/maintenances/add/` + moto_id);
   };
 
   return (
     <div className="p-4 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-bold mb-6">Gestion des entretiens</h1>
 
-      <div className="flex justify-end mb-4">
-        <button
-          onClick={handleAdd}
-          className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500"
-        >
-          Planifier un entretien
-        </button>
-        <button
-          onClick={handleDeleteAll}
-          className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-500 ml-2"
-        >
-          Supprimer tous les entretiens
-        </button>
-      </div>
+      {motos.map(function (moto) {
+        return (
+          <>
+            <div className="bg-white shadow-md rounded-lg p-4" key={moto.id}>
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-bold mb-4">{moto.fk_model.label} - {moto.serial_number}</h2>
+                {company_type == "Concessionnaire" && (
+                  <button
+                    onClick={() => handleAdd(moto.id)}
+                    className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500"
+                  >
+                    Planifier un entretien
+                  </button>
+                )}
+              </div>
+              {loading ? (
+                <p>Chargement des données...</p>
+              ) : (
+                <MaintenanceTable services={moto.services} company_type={company_type} />
+              )}
+            </div>
 
-      <div className="bg-white shadow-md rounded-lg p-4">
-        <h2 className="text-2xl font-bold mb-4">Liste des entretiens</h2>
-        {loading ? (
-          <p>Chargement des données...</p>
-        ) : (
-          <MaintenanceTable maintenances={maintenances} />
-        )}
-      </div>
+            <br />
+          </>
+        )
+      })}
     </div>
   );
 };

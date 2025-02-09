@@ -29,6 +29,16 @@ export class MotoController {
     return this.motoService.getMotoById(id);
   }
 
+  @Get('owner/:owner_id')
+  async getMotosByOwner(@Param('owner_id') owner_id: string) {
+    return this.motoService.getMotosByOwner(owner_id);
+  }
+
+  @Get('dealer/:company_id')
+  async getMotosByCompany(@Param('company_id') company_id: string) {
+    return this.motoService.getMotosByCompany(company_id);
+  }
+
   @Patch(':id')
   async updateMoto(
     @Param('id') id: string,
