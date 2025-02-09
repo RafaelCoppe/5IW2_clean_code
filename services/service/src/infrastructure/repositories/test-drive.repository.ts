@@ -50,6 +50,23 @@ export class TestDriveRepository {
     });
   }
 
+  async findByCompany(company_id: string): Promise<TestDrive[]> {
+    return this.repository.find({
+      where: {
+        fk_moto: {
+          fk_dealer: {
+            id: company_id,
+          },
+        },
+      },
+      relations: {
+        fk_driver: true,
+        fk_moto: true,
+        fk_incident: true,
+      },
+    });
+  }
+
   async create(driver: Partial<TestDrive>): Promise<TestDrive> {
     return this.repository.save(driver);
   }

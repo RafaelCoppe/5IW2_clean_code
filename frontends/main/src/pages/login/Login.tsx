@@ -23,7 +23,7 @@ const Login: React.FC = () => {
         const data = response.data;
         console.log("Données de l'utilisateur connecté :", data);
         dispatch(login(data));
-        navigate("/dashboard");
+        window.location.reload();
       })
       .catch(() => {
         setError("Email ou mot de passe invalide");

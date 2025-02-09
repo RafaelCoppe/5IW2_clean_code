@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 interface SidebarProps {
-  isAdmin: boolean; // Prop pour savoir si l'utilisateur est admin
+  user: object; // Prop pour savoir si l'utilisateur est admin
 }
 
 const handleDisconnect = () => {
@@ -10,7 +10,9 @@ const handleDisconnect = () => {
   window.location.reload();
 };
 
-export const Sidebar: React.FC<SidebarProps> = ({ isAdmin }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
+  const company_type = user.fk_company.type;
+
   return (
     <aside className="fixed h-screen w-64 bg-gray-900 text-white flex flex-col">
       <div className="p-4 text-xl font-bold">Triumph Fleet</div>
@@ -24,6 +26,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isAdmin }) => {
               Dashboard
             </Link>
           </li>
+          { }
           <li>
             <Link
               to="/motorcycles"
@@ -42,7 +45,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isAdmin }) => {
           </li>
           <li>
             <Link
-              to="/spare-parts/company"
+              to="/spare-parts"
               className="block p-2 rounded-lg hover:bg-gray-700"
             >
               Gestion des pièces
@@ -56,7 +59,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isAdmin }) => {
               Gestion des essais
             </Link>
           </li>
-          {isAdmin && (
+          {user.is_admin && (
             <li>
               <Link
                 to="/users"
@@ -66,14 +69,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ isAdmin }) => {
               </Link>
             </li>
           )}
-          <li>
-            <Link
-              to="/drivers"
-              className="block p-2 rounded-lg hover:bg-gray-700"
-            >
-              Gestion des conducteurs
-            </Link>
-          </li>
+          {company_type == 'Concessionnaire' &&
+            <li>
+              <Link
+                to="/drivers"
+                className="block p-2 rounded-lg hover:bg-gray-700"
+              >
+                Gestion des conducteurs
+              </Link>
+            </li>
+          }
           <li>
             <Link
               to="/companies"

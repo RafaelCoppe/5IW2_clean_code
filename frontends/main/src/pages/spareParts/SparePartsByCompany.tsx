@@ -7,7 +7,7 @@ import { RootState } from "../../services/store";
 
 const SparePartsByCompany: React.FC = () => {
   //   const { id } = useParams(); // Récupération de l'ID de l'entreprise depuis l'URL
-  const id = useSelector((state: RootState) => state.auth.user?.company?.id); // Récupère l'ID de l'entreprise
+  const id = useSelector((state: RootState) => state.auth.user?.fk_company?.id); // Récupère l'ID de l'entreprise
   console.log("ID de l'entreprise de l'utilisateur connecté :", id); // Debug
   const [spareParts, setSpareParts] = useState<SparePartCommand[]>([]);
   const api = useApi();

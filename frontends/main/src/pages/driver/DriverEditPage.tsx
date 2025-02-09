@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useApi } from "../../context/ApiContext";
 
@@ -11,6 +11,10 @@ interface User {
 interface Motorcycle {
   id: string;
   serial_number: string;
+  fk_owner: string | null;
+    fk_model: {
+        label: string;
+    };
 }
 
 const DriverEditPage: React.FC = () => {
@@ -27,6 +31,8 @@ const DriverEditPage: React.FC = () => {
 
   const [users, setUsers] = useState<User[]>([]);
   const [motorcycles, setMotorcycles] = useState<Motorcycle[]>([]);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +44,8 @@ const DriverEditPage: React.FC = () => {
 
         // Fetch motorcycles from the API
         const motoResponse = await api.get('moto', { credentials: 'include' });
-        setMotorcycles(motoResponse.data);
+        const availableMotorcycles = motoResponse.data.filter((moto: any) => moto.fk_owner === null);
+        setMotorcycles(availableMotorcycles);
 
         if (id) {
           const driverData = filteredUsers.find((user: any) => user.driver.fk_user === id);
@@ -60,6 +67,15 @@ const DriverEditPage: React.FC = () => {
 
     fetchData();
   }, [api, id]);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedFile(e.target.files[0]);
+      const fileName = e.target.files[0].name;
+      const licenseLink = `/licenses/${fileName}`;
+      setFormData({ ...formData, license_link: licenseLink });
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,6 +106,12 @@ const DriverEditPage: React.FC = () => {
     }
   };
 
+  const triggerFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
   return (
     <div className="p-4 bg-white shadow-md rounded-lg">
       <h1 className="text-2xl font-bold mb-4">
@@ -113,16 +135,6 @@ const DriverEditPage: React.FC = () => {
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-2">Lien du permis</label>
-          <input
-            type="text"
-            value={formData.license_link}
-            onChange={(e) => setFormData({ ...formData, license_link: e.target.value })}
-            className="w-full border p-2 rounded-md"
-            required
-          />
-        </div>
-        <div>
           <label className="block text-sm font-medium mb-2">Expérience</label>
           <textarea
             value={formData.experience}
@@ -141,10 +153,29 @@ const DriverEditPage: React.FC = () => {
             <option value="">Sélectionnez une moto</option>
             {motorcycles.map((moto) => (
               <option key={moto.id} value={moto.id}>
-                {moto.serial_number}
+                {moto.serial_number} - {moto.fk_model.label}
               </option>
             ))}
           </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-2">Ajouter votre permis</label>
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            className="hidden"
+          />
+          {selectedFile && (
+            <p className="text-sm text-gray-600 mb-2">{selectedFile.name}</p>
+          )}
+          <button
+            type="button"
+            onClick={triggerFileInput}
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-500 mt-2"
+          >
+            Upload File
+          </button>
         </div>
         <button
           type="submit"

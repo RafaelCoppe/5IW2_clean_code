@@ -11,18 +11,11 @@ interface Driver {
   };
   license_link: string;
   experience: string;
+  fk_status: {
+    id: number;
+    name: string;
+  };
 }
-
-interface User {
-    id: string;
-    first_name: string;
-    last_name: string;
-    driver: {
-        fk_user: string;
-        license_link: string;
-        experience: string;
-    };
-  }
 
 export const Driver: React.FC = () => {
   const api = useApi();
@@ -32,7 +25,11 @@ export const Driver: React.FC = () => {
   useEffect(() => {
     api.get("user", { credentials: 'include' })
       .then((response) => {
-        const filteredUsers = response.data.filter((user: any) => user.driver !== null);
+        const filteredUsers = response.data.filter((user: any) => 
+          user.driver !== null &&
+          user.driver.fk_status &&
+          user.driver.fk_status.id === 1
+        );
         setDrivers(filteredUsers.map((user: any) => ({
           id: user.driver.id,
           fk_user: {
@@ -42,6 +39,7 @@ export const Driver: React.FC = () => {
           },
           license_link: user.driver.license_link,
           experience: user.driver.experience,
+          fk_status: user.driver.fk_status,
         })));
       })
       .catch(console.error);
@@ -51,11 +49,12 @@ export const Driver: React.FC = () => {
     if (window.confirm("Voulez-vous vraiment supprimer ce conducteur ?")) {
       try {
         const dataToSend = {
-          driver: null,
+          fk_status: { id: 4 }
         };
-        const response = await api.patch(`user/${id}`, dataToSend);
+        const response = await api.patch(`driver/${id}`, dataToSend);
         if (response.status === 200) {
-          setDrivers(drivers.filter((driver) => driver.id !== id)); // Delete locally
+          setDrivers(drivers.filter((driver) => driver.id !== id)); // Update the state immediately
+          window.location.reload();
           console.log('Conducteur supprimé :', id);
         } else {
           const errorText = await response.data;
@@ -64,6 +63,9 @@ export const Driver: React.FC = () => {
         }
       } catch (error) {
         console.error('Erreur :', error);
+        if (error) {
+          console.error('Response data:', error);
+        }
         alert('Erreur lors de la suppression du conducteur.');
       }
     }
