@@ -36,11 +36,21 @@ INSERT INTO moto_model (id, label, fk_category) VALUES (1, 'TIGER 1200 RANGE', 1
   , (10, 'TRIDENT 660', 4) -- ROADSTERS
   , (11, 'SPEED TRIPLE 1200 RR', 4); -- ROADSTERS
 
+-- Service des modèles de moto
+INSERT INTO moto_model_service (id, fk_model, distance_interval, time_interval, price, position)
+  VALUES (1, 1, 800, 1, 205, 1), (2, 1, 10000, NULL, 335, 2), (3, 1, 20000, NULL, 675, 3), (4, 1, 30000, NULL, 335, 4), (5, 1, NULL, 12, 225, 5) -- TIGER 1200 RANGE
+  , (6, 2, 800, 1, 205, 1), (7, 2, 10000, NULL, 335, 2), (8, 2, 20000, NULL, 675, 3), (9, 2, 30000, NULL, 335, 4), (10, 2, NULL, 12, 225, 5) -- TIGER 900
+  , (11, 3, 800, 1, 205, 1), (12, 3, 10000, NULL, 335, 2), (13, 3, 20000, NULL, 675, 3), (14, 3, 30000, NULL, 335, 4), (15, 3, NULL, 12, 225, 5) -- TIGER 850 SPORT
+  , (16, 4, 800, 1, 205, 1), (17, 4, 16000, NULL, 315, 2), (18, 4, 32000, NULL, 645, 3), (19, 4, 48000, NULL, 315, 4), (20, 4, NULL, 12, 225, 5) -- SPEED TWIN 1200
+  , (26, 6, 800, 1, 205, 1), (27, 6, 16000, NULL, 315, 2), (28, 6, 32000, NULL, 645, 3), (29, 6, 48000, NULL, 315, 4), (30, 6, NULL, 12, 225, 5) -- BONNEVILLE T100
+  , (46, 10, 800, 1, 195, 1), (47, 10, 16000, NULL, 225, 2), (48, 10, 32000, NULL, 595, 3), (49, 10, 48000, NULL, 225, 4), (50, 10, NULL, 12, 195, 5) -- TRIDENT 660
+  , (51, 11, 800, 1, 225, 1), (52, 11, 16000, NULL, 335, 2), (53, 11, 32000, NULL, 955, 3), (54, 11, 335, NULL, 48000, 4), (55, 11, NULL, 12, 235, 5); -- SPEED TRIPLE 1200 RR
+
 -- Moto
-INSERT INTO moto (id, fk_model, serial_number, price, color, capacity, year, warranty_end, next_service_date, next_service_distance, fk_dealer, fk_owner)
-  VALUES ('15e425bd-4565-41e7-85e5-0f8bdf42d536', 1, 'T1200-2', 12000, 'Noir mat', 20, 2021, '2023-01-01', '2025-09-01', 55000, '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8', NULL)
-  , ('02c65295-0e7a-48ea-85d5-56c4bb2456c4', 5, 'S400-1', 23000, 'Bleu roi', 25, 2023, '2025-01-01', '2027-11-01', 60000, '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8', 'be326539-c9de-4dcb-a979-1933995e9df4')
-  , ('0d985b74-7326-4b54-8d3f-a677e089bdc1', 10, 'T660-5', 20000, 'Ambre', 20, 2022, '2024-01-01' , '2026-03-01', 50000, '6e7f2bb7-411d-4cf4-9f6e-cc51ca726143', NULL);
+INSERT INTO moto (id, fk_model, serial_number, price, color, capacity, year, warranty_end, fk_dealer, fk_owner)
+  VALUES ('15e425bd-4565-41e7-85e5-0f8bdf42d536', 1, 'T1200-2', 12000, 'Noir mat', 20, 2021, '2023-01-01', '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8', NULL)
+  , ('02c65295-0e7a-48ea-85d5-56c4bb2456c4', 5, 'S400-1', 23000, 'Bleu roi', 25, 2023, '2025-01-01', '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8', 'be326539-c9de-4dcb-a979-1933995e9df4')
+  , ('0d985b74-7326-4b54-8d3f-a677e089bdc1', 10, 'T660-5', 20000, 'Ambre', 20, 2022, '2024-01-01' , '6e7f2bb7-411d-4cf4-9f6e-cc51ca726143', NULL);
 
 -- Pièces détachées
 INSERT INTO spare_part (id, label, picture_link) 

@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { MotoModelCategory } from './moto-model-category.entity';
 import { Moto } from './moto.entity';
+import { MotoModelService } from './moto-model-service.entity';
 
 @Entity('moto_model')
 export class MotoModel {
@@ -23,4 +24,7 @@ export class MotoModel {
   @ManyToOne(() => MotoModelCategory, (category) => category.id)
   @JoinColumn({ name: 'fk_category' })
   fk_category: MotoModelCategory;
+
+  @OneToMany(() => MotoModelService, (service) => service.fk_model)
+  services: MotoModelService[];
 }

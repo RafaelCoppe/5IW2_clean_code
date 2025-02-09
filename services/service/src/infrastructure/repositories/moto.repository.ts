@@ -7,7 +7,7 @@ import { Repository } from 'typeorm';
 export class MotoRepository {
   constructor(
     @InjectRepository(Moto)
-    private readonly repository: Repository<Moto>
+    private readonly repository: Repository<Moto>,
   ) {}
 
   async create(moto: Partial<Moto>): Promise<Moto> {
