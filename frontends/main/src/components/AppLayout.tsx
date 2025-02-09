@@ -50,31 +50,61 @@ const AppLayout: React.FC<{ user: object }> = ({ user }) => {
         {/* Pages */}
         <main className="flex-1 p-4 bg-gray-100 mt-16 overflow-auto">
           <Routes>
-            {company_type == 'Concessionnaire' && 
+            {company_type == "Concessionnaire" && (
               <>
                 <Route path="/spare-parts" element={<SpareParts />} />
-                <Route path="/spare-parts/add" element={<SparePartFormPage />} />
-                <Route path="/spare-parts/edit/:id" element={<SparePartEditPage />} />
-                <Route path="/spare-parts/add" element={<AddSparePartCommand />} />
+
+                <Route
+                  path="/spare-parts/edit/:id"
+                  element={<SparePartEditPage />}
+                />
+                <Route
+                  path="/spare-parts/add"
+                  element={<AddSparePartCommand />}
+                />
 
                 <Route path="/drivers" element={<Driver />} />
                 <Route path="/drivers/add" element={<DriverFormPage />} />
                 <Route path="/drivers/edit/:id" element={<DriverEditPage />} />
 
-                <Route path="/test-drives/add" element={<TestDriveFormPage />} />
-                <Route path="/test-drives/edit/:id" element={<TestDriveEditPage />} />
+                <Route
+                  path="/test-drives/add"
+                  element={<TestDriveFormPage />}
+                />
+                <Route
+                  path="/test-drives/edit/:id"
+                  element={<TestDriveEditPage />}
+                />
 
-                <Route path="/maintenances/:id" element={<MaintenanceDetailsPage />} />
-                <Route path="/maintenances/add/:id" element={<PlanMaintenance />} />
+                <Route
+                  path="/maintenances/:id"
+                  element={<MaintenanceDetailsPage />}
+                />
+                <Route
+                  path="/maintenances/add/:id"
+                  element={<PlanMaintenance />}
+                />
 
-                <Route path="/motorcycles/add" element={<MotorcycleFormPage />} />
-                <Route path="/motorcycles/edit/:id" element={<AddEditMotorcycle />} />
-                <Route path="/motorcycles/:id" element={<MotorcycleDetails />} />
+                <Route
+                  path="/motorcycles/add"
+                  element={<MotorcycleFormPage />}
+                />
+                <Route
+                  path="/motorcycles/edit/:id"
+                  element={<AddEditMotorcycle />}
+                />
+                <Route
+                  path="/motorcycles/:id"
+                  element={<MotorcycleDetails />}
+                />
               </>
-            }
+            )}
 
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/motorcycles" element={<Motorcycles userRole={"dealer"} />} />
+            <Route
+              path="/motorcycles"
+              element={<Motorcycles userRole={"dealer"} />}
+            />
 
             <Route path="/maintenances" element={<Maintenance />} />
 
@@ -83,8 +113,13 @@ const AppLayout: React.FC<{ user: object }> = ({ user }) => {
               path="/spare-parts/company"
               element={<SparePartsByCompany />}
             />
+            <Route path="/spare-parts/add" element={<AddSparePartCommand />} />
+            <Route
+              path="/spare-parts/:id/edit"
+              element={<EditSparePartCommand />}
+            />
 
-            { user.is_admin &&
+            {user.is_admin && (
               <>
                 <Route path="/users" element={<Users />} />
                 <Route path="/users/add" element={<UserFormPage />} />
@@ -92,9 +127,12 @@ const AppLayout: React.FC<{ user: object }> = ({ user }) => {
 
                 <Route path="/companies" element={<Companies />} />
                 <Route path="/companies/add" element={<CompanyFormPage />} />
-                <Route path="/companies/edit/:id" element={<CompanyEditPage />} />
+                <Route
+                  path="/companies/edit/:id"
+                  element={<CompanyEditPage />}
+                />
               </>
-            }
+            )}
 
             <Route path="/notifications" element={<Notifications />} />
             {/* <Route path="/settings" element={<Settings />} /> */}

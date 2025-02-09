@@ -11,6 +11,10 @@ export class TestDriveService {
     return this.testDriveRepository.create(createMotoDto);
   }
 
+  async getAllTestDrives(): Promise<TestDrive[]> {
+    return this.testDriveRepository.findAll();
+  }
+
   async findByDriver(driver_id: string): Promise<TestDrive[]> {
     return this.testDriveRepository.findByDriver(driver_id);
   }

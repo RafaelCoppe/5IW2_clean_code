@@ -26,7 +26,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
               Dashboard
             </Link>
           </li>
-          { }
+          {}
           <li>
             <Link
               to="/motorcycles"
@@ -45,7 +45,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
           </li>
           <li>
             <Link
-              to="/spare-parts"
+              to="/spare-parts/company"
               className="block p-2 rounded-lg hover:bg-gray-700"
             >
               Gestion des pièces
@@ -69,7 +69,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
               </Link>
             </li>
           )}
-          {company_type == 'Concessionnaire' &&
+          {company_type == "Concessionnaire" && (
             <li>
               <Link
                 to="/drivers"
@@ -78,7 +78,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
                 Gestion des conducteurs
               </Link>
             </li>
-          }
+          )}
           <li>
             <Link
               to="/companies"
