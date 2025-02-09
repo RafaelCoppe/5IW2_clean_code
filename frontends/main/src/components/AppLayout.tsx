@@ -28,6 +28,9 @@ import TestDriveEditPage from "../pages/testDrive/TestDriveEditPage";
 
 import CompanyFormPage from "../pages/company/CompanyFormPage";
 import CompanyEditPage from "../pages/company/CompanyEditPage";
+import SparePartsByCompany from "../pages/spareParts/SparePartsByCompany";
+import EditSparePartCommand from "../pages/spareParts/EditSparePartCommand";
+import AddSparePartCommand from "../pages/spareParts/AddSparePartCommand";
 
 const AppLayout: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
   return (
@@ -43,29 +46,53 @@ const AppLayout: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
         <main className="flex-1 p-4 bg-gray-100 mt-16 overflow-auto">
           <Routes>
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/motorcycles" element={<Motorcycles userRole={"dealer"} />} />
+            <Route
+              path="/motorcycles"
+              element={<Motorcycles userRole={"dealer"} />}
+            />
             <Route path="/motorcycles/add" element={<MotorcycleFormPage />} />
-            <Route path="/motorcycles/edit/:id" element={<AddEditMotorcycle />} />
+            <Route
+              path="/motorcycles/edit/:id"
+              element={<AddEditMotorcycle />}
+            />
             <Route path="/motorcycles/:id" element={<MotorcycleDetails />} />
-
             <Route path="/maintenances" element={<Maintenance />} />
-            <Route path="/maintenances/:id" element={<MaintenanceDetailsPage />} />
+            <Route
+              path="/maintenances/:id"
+              element={<MaintenanceDetailsPage />}
+            />
             <Route path="/maintenances/add" element={<PlanMaintenance />} />
             <Route path="/spare-parts" element={<SpareParts />} />
             <Route path="/spare-parts/add" element={<SparePartFormPage />} />
-            <Route path="/spare-parts/edit/:id" element={<SparePartEditPage />} />
+            <Route
+              path="/spare-parts/edit/:id"
+              element={<SparePartEditPage />}
+            />
             <Route path="/test-drives" element={<TestDrives />} />
             <Route path="/test-drives/add" element={<TestDriveFormPage />} />
-            <Route path="/test-drives/edit/:id" element={<TestDriveEditPage />} />
-
+            <Route
+              path="/test-drives/edit/:id"
+              element={<TestDriveEditPage />}
+            />
+            <Route
+              path="/spare-parts/company/:id"
+              element={<SparePartsByCompany />}
+            />
+            spare-parts/3/edit
+            <Route
+              path="/spare-parts/:id/edit"
+              element={<EditSparePartCommand />}
+            />
+            <Route
+              path="/spare-parts/:id/add"
+              element={<AddSparePartCommand />}
+            />
             {isAdmin && <Route path="/users" element={<Users />} />}
             <Route path="/users/add" element={<UserFormPage />} />
             <Route path="/users/edit/:id" element={<UserEditPage />} />
-
             <Route path="/companies" element={<Companies />} />
             <Route path="/companies/add" element={<CompanyFormPage />} />
             <Route path="/companies/edit/:id" element={<CompanyEditPage />} />
-            
             <Route path="/notifications" element={<Notifications />} />
             {/* <Route path="/settings" element={<Settings />} /> */}
           </Routes>
