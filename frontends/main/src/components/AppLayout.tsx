@@ -58,6 +58,7 @@ const AppLayout: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
             <Route path="/spare-parts" element={<SpareParts />} />
             <Route path="/spare-parts/add" element={<SparePartFormPage />} />
             <Route path="/spare-parts/edit/:id" element={<SparePartEditPage />} />
+            
             <Route path="/test-drives" element={<TestDrives />} />
             <Route path="/test-drives/add" element={<TestDriveFormPage />} />
             <Route path="/test-drives/edit/:id" element={<TestDriveEditPage />} />

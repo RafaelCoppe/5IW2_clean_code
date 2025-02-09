@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useApi } from "../../context/ApiContext";
+import { useSelector } from "react-redux";
+import { RootState } from "../../services/store";
+import { format } from 'date-fns';
 
 interface TestDrive {
   id: number;
@@ -8,18 +11,38 @@ interface TestDrive {
   vehicle_model: string;
   date: string;
   status: string;
+  motorcycle_id: string;
+  driver_id: string;
+  duration: string;
+  fk_moto: {
+    serial_number: string;
+  };
+  fk_driver: {
+    first_name: string;
+    last_name: string;
+  };
 }
 
 const TestDrives: React.FC = () => {
   const [testDrives, setTestDrives] = useState<TestDrive[]>([]);
   const navigate = useNavigate();
   const api = useApi();
+  const user = useSelector((state: RootState) => state.auth.user);
 
   useEffect(() => {
-    api.get("testdrive", { credentials: 'include' })
-      .then((response) => setTestDrives(response.data))
-      .catch(console.error);
-  }, [api]);
+    const fetchTestDrives = async () => {
+      if (user && user.company.id) {
+        try {
+          const response = await api.get(`test_drive/company/${user.company.id}`, { credentials: 'include' });
+          setTestDrives(response.data);
+        } catch (error) {
+          console.error('Erreur lors de la récupération des Test Drives :', error);
+        }
+      }
+    };
+
+    fetchTestDrives();
+  }, [api, user]);
 
   const handleDelete = async (id: number) => {
     if (window.confirm("Voulez-vous vraiment supprimer ce Test Drive ?")) {
@@ -40,11 +63,11 @@ const TestDrives: React.FC = () => {
   };
 
   const handleEdit = (id: number) => {
-    navigate(`/testdrives/edit/${id}`);
+    navigate(`/test-drives/edit/${id}`);
   };
 
   const handleAdd = () => {
-    navigate(`/testdrives/add`);
+    navigate(`/test-drives/add`);
   };
 
   const handleDeleteAll = async () => {
@@ -63,6 +86,12 @@ const TestDrives: React.FC = () => {
         alert('Erreur lors de la suppression.');
       }
     }
+  };
+
+  const formatDuration = (minutes: number) => {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return `${hours}h ${remainingMinutes}m`;
   };
 
   return (
@@ -92,17 +121,17 @@ const TestDrives: React.FC = () => {
               <th className="border px-4 py-2">Client</th>
               <th className="border px-4 py-2">Véhicule</th>
               <th className="border px-4 py-2">Date</th>
-              <th className="border px-4 py-2">Statut</th>
+              <th className="border px-4 py-2">Durée</th>
               <th className="border px-4 py-2">Actions</th>
             </tr>
           </thead>
           <tbody>
             {testDrives.map((td) => (
               <tr key={td.id}>
-                <td className="border px-4 py-2">{td.client_name}</td>
-                <td className="border px-4 py-2">{td.vehicle_model}</td>
-                <td className="border px-4 py-2">{td.date}</td>
-                <td className="border px-4 py-2">{td.status}</td>
+                <td className="border px-4 py-2">{td.fk_driver.first_name} {td.fk_driver.last_name}</td>
+                <td className="border px-4 py-2">{td.fk_moto.serial_number}</td>
+                <td className="border px-4 py-2">{format(new Date(td.date), 'dd/MM/yyyy')}</td>
+                <td className="border px-4 py-2">{formatDuration(Number(td.duration))}</td>
                 <td className="border px-4 py-2">
                   <button
                     onClick={() => handleEdit(td.id)}
