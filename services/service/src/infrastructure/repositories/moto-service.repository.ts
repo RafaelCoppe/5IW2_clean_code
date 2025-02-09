@@ -37,7 +37,9 @@ export class MotoServiceRepository {
     return this.repository.findOne({
       where: { id },
       relations: {
-        fk_moto: true,
+        fk_moto: {
+          fk_model: true,
+        },
         fk_parts: true,
       },
     });
