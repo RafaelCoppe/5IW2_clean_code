@@ -28,6 +28,9 @@ import TestDriveEditPage from "../pages/testDrive/TestDriveEditPage";
 
 import CompanyFormPage from "../pages/company/CompanyFormPage";
 import CompanyEditPage from "../pages/company/CompanyEditPage";
+import SparePartsByCompany from "../pages/spareParts/SparePartsByCompany";
+import EditSparePartCommand from "../pages/spareParts/EditSparePartCommand";
+import AddSparePartCommand from "../pages/spareParts/AddSparePartCommand";
 
 import DriverFormPage from "../pages/driver/DriverFormPage";
 import DriverEditPage from "../pages/driver/DriverEditPage";
