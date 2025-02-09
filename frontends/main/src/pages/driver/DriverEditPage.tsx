@@ -8,15 +8,6 @@ interface User {
   last_name: string;
 }
 
-interface Motorcycle {
-  id: string;
-  serial_number: string;
-  fk_owner: string | null;
-    fk_model: {
-        label: string;
-    };
-}
-
 const DriverEditPage: React.FC = () => {
   const { id } = useParams<{ id: string }>(); // Récupérer l'ID dans l'URL
   const navigate = useNavigate();
@@ -26,11 +17,9 @@ const DriverEditPage: React.FC = () => {
     fk_user: '',
     license_link: '',
     experience: '',
-    motorcycle_id: '',
   });
 
   const [users, setUsers] = useState<User[]>([]);
-  const [motorcycles, setMotorcycles] = useState<Motorcycle[]>([]);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -42,11 +31,6 @@ const DriverEditPage: React.FC = () => {
         const filteredUsers = userResponse.data.filter((user: any) => user.driver !== null);
         setUsers(filteredUsers);
 
-        // Fetch motorcycles from the API
-        const motoResponse = await api.get('moto', { credentials: 'include' });
-        const availableMotorcycles = motoResponse.data.filter((moto: any) => moto.fk_owner === null);
-        setMotorcycles(availableMotorcycles);
-
         if (id) {
           const driverData = filteredUsers.find((user: any) => user.driver.fk_user === id);
 
@@ -56,7 +40,6 @@ const DriverEditPage: React.FC = () => {
               fk_user: driverData.id,
               license_link: driverData.driver.license_link,
               experience: driverData.driver.experience,
-              motorcycle_id: driverData.driver.motorcycle_id || '',
             });
           }
         }
@@ -92,11 +75,6 @@ const DriverEditPage: React.FC = () => {
       } else {
         await api.post("driver", dataToSend);
         console.log("Added driver:", dataToSend);
-      }
-
-      if (formData.motorcycle_id) {
-        await api.put(`moto/${formData.motorcycle_id}`, { fk_owner: { id: formData.fk_user } });
-        console.log('Moto liée au conducteur :', formData.motorcycle_id);
       }
 
       navigate("/drivers");
@@ -142,21 +120,6 @@ const DriverEditPage: React.FC = () => {
             className="w-full border p-2 rounded-md"
             required
           />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-2">Moto (optionnel)</label>
-          <select
-            value={formData.motorcycle_id}
-            onChange={(e) => setFormData({ ...formData, motorcycle_id: e.target.value })}
-            className="w-full border p-2 rounded-md"
-          >
-            <option value="">Sélectionnez une moto</option>
-            {motorcycles.map((moto) => (
-              <option key={moto.id} value={moto.id}>
-                {moto.serial_number} - {moto.fk_model.label}
-              </option>
-            ))}
-          </select>
         </div>
         <div>
           <label className="block text-sm font-medium mb-2">Ajouter votre permis</label>

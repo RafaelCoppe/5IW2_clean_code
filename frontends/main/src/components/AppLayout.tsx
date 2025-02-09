@@ -76,7 +76,6 @@ const AppLayout: React.FC<{ user: object }> = ({ user }) => {
             <Route path="/motorcycles" element={<Motorcycles userRole={"dealer"} />} />
 
             <Route path="/maintenances" element={<Maintenance />} />
-
             <Route path="/test-drives" element={<TestDrives />} />
 
             { user.is_admin &&
