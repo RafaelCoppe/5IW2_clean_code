@@ -4,6 +4,11 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../services/store";
 
+interface User {
+  id: string;
+  name: string;
+}
+
 export const TopBar: React.FC = () => {
   const [unreadCount, setUnreadCount] = useState(0);
   const user = useSelector((state: RootState) => state.auth.user);

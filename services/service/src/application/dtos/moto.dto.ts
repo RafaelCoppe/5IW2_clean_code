@@ -40,12 +40,6 @@ export class CreateMotoDto {
   @IsNotEmpty()
   warranty_end: Date;
 
-  @IsDate()
-  next_service_date: Date;
-
-  @IsNumber()
-  next_service_distance: number;
-
   @IsNotEmpty()
   fk_dealer: Company;
 

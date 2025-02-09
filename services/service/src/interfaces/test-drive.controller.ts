@@ -24,6 +24,11 @@ export class TestDriveController {
     return this.testDriveService.findByMoto(moto_id);
   }
 
+  @Get('company/:company_id')
+  async getTestDriveByCompany(@Param('company_id') company_id: string) {
+    return this.testDriveService.findByCompany(company_id);
+  }
+
   @Post()
   async createTestDrive(@Body() createDriverDto: CreateTestDriveDto) {
     return this.testDriveService.create(createDriverDto);
