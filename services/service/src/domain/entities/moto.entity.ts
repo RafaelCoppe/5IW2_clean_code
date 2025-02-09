@@ -22,7 +22,7 @@ export class Moto {
   @Column({ name: 'serial_number', type: 'varchar', length: 50 })
   serial_number: string;
 
-  @Column({ name: 'price', type: 'integer' })
+  @Column({ name: 'price', type: 'float' })
   price: number;
 
   @Column({ name: 'color', type: 'varchar', length: 50 })
@@ -37,7 +37,9 @@ export class Moto {
   @Column({ name: 'warranty_end', type: 'date' })
   warranty_end: Date;
 
-  @ManyToOne(() => MotoModelService, (service) => service.id)
+  @ManyToOne(() => MotoModelService, (service) => service.id, {
+    nullable: true,
+  })
   next_service: MotoModelService;
 
   @ManyToOne(() => Company, (owner) => owner.id)
