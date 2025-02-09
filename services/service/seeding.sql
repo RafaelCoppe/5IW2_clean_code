@@ -83,7 +83,7 @@ INSERT INTO moto_breakdown_spare_part
 
 -- Driver status
 INSERT INTO driver_status (id, name)
-  VALUES (1, 'Autorisé'), (2, 'Suspendu'), (3, 'En attente');
+  VALUES (1, 'Autorisé'), (2, 'Suspendu'), (3, 'En attente'), (4, 'Supprimé');
 
 -- Drivers
 INSERT INTO driver (fk_user, fk_status, license_link, experience)

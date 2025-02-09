@@ -18,7 +18,7 @@ export const TopBar: React.FC = () => {
   }, []);
 
   return (
-    <header className="min-h-16 bg-gray-800 text-white flex items-center justify-between px-4 shadow-md">
+    <header className="fixed top-0 left-0 right-0 min-h-16 bg-gray-800 text-white flex items-center justify-between px-4 shadow-md z-10">
       <div className="flex items-center gap-2">
         <Search className="w-5 h-5 text-gray-400" />
         <input

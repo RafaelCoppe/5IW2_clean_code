@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { useApi } from "../../context/ApiContext";
 
 interface User {
   id: number;
-  name: string;
+  last_name: string;
+  first_name: string;
   email: string;
   role: string;
 }
@@ -11,33 +13,31 @@ interface User {
 const Users: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const navigate = useNavigate();
+  const api = useApi();
 
-  // Simulate fetching users data
   useEffect(() => {
-    const fetchUsers = () => {
-      const simulatedData: User[] = [
-        {
-          id: 1,
-          name: "John Doe",
-          email: "john.doe@example.com",
-          role: "Admin",
-        },
-        {
-          id: 2,
-          name: "Jane Doe",
-          email: "jane.doe@example.com",
-          role: "User",
-        },
-      ];
-      setUsers(simulatedData);
-    };
-    fetchUsers();
-  }, []);
+    api.get("user", { credentials: 'include' })
+        .then((response) => setUsers(response.data))
+        .catch(console.error);
+  }, [api]);
 
   // Handle delete user
-  const handleDelete = (id: number) => {
+  const handleDelete = async (id: number) => {
     if (window.confirm("Voulez-vous vraiment supprimer cet utilisateur ?")) {
-      setUsers(users.filter((user) => user.id !== id)); // Delete locally
+      try {
+        const response = await api.delete(`user/${id}`);
+        if (response.status === 200) {
+          setUsers(users.filter((user) => user.id !== id)); // Delete locally
+          console.log('Utilisateur supprimé :', id);
+        } else {
+          const errorText = await response.data;
+          console.error('Erreur lors de la suppression de l\'utilisateur:', errorText);
+          alert('Erreur lors de la suppression de l\'utilisateur.');
+        }
+      } catch (error) {
+        console.error('Erreur :', error);
+        alert('Erreur lors de la suppression de l\'utilisateur.');
+      }
     }
   };
 
@@ -52,9 +52,22 @@ const Users: React.FC = () => {
   };
 
   // Handle delete all users
-  const handleDeleteAll = () => {
+  const handleDeleteAll = async () => {
     if (window.confirm("Voulez-vous vraiment supprimer tous les utilisateurs ?")) {
-      setUsers([]); // Delete all locally
+      try {
+        const response = await api.delete('user');
+        if (response.status === 200) {
+          setUsers([]); // Delete all locally
+          console.log('Tous les utilisateurs ont été supprimés');
+        } else {
+          const errorText = await response.data;
+          console.error('Erreur lors de la suppression de tous les utilisateurs:', errorText);
+          alert('Erreur lors de la suppression de tous les utilisateurs.');
+        }
+      } catch (error) {
+        console.error('Erreur :', error);
+        alert('Erreur lors de la suppression de tous les utilisateurs.');
+      }
     }
   };
 
@@ -65,7 +78,7 @@ const Users: React.FC = () => {
       <div className="flex justify-end mb-4">
         <button
           onClick={handleAdd}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-500"
+          className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500"
         >
           Ajouter un utilisateur
         </button>
@@ -83,17 +96,17 @@ const Users: React.FC = () => {
           <thead className="bg-gray-100">
             <tr>
               <th className="border px-4 py-2">Nom</th>
+              <th className="border px-4 py-2">Prénom</th>
               <th className="border px-4 py-2">Email</th>
-              <th className="border px-4 py-2">Rôle</th>
               <th className="border px-4 py-2">Actions</th>
             </tr>
           </thead>
           <tbody>
             {users.map((user) => (
               <tr key={user.id}>
-                <td className="border px-4 py-2">{user.name}</td>
+                <td className="border px-4 py-2">{user.last_name}</td>
+                <td className="border px-4 py-2">{user.first_name}</td>
                 <td className="border px-4 py-2">{user.email}</td>
-                <td className="border px-4 py-2">{user.role}</td>
                 <td className="border px-4 py-2">
                   <button
                     onClick={() => handleEdit(user.id)}

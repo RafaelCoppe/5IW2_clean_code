@@ -76,7 +76,7 @@ const TestDrives: React.FC = () => {
       <div className="flex justify-end mb-4">
         <button
           onClick={handleAdd}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-500"
+          className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-blue-500"
         >
           Ajouter un test de conduite
         </button>
