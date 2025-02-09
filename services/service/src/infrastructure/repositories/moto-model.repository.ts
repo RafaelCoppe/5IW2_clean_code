@@ -7,7 +7,7 @@ import { Repository } from 'typeorm';
 export class MotoModelRepository {
   constructor(
     @InjectRepository(MotoModel)
-    private readonly repository: Repository<MotoModel>
+    private readonly repository: Repository<MotoModel>,
   ) {}
 
   async create(moto: Partial<MotoModel>): Promise<MotoModel> {
@@ -18,6 +18,7 @@ export class MotoModelRepository {
     return this.repository.find({
       relations: {
         fk_category: true,
+        services: true,
       },
     });
   }
@@ -27,6 +28,7 @@ export class MotoModelRepository {
       where: { id },
       relations: {
         fk_category: true,
+        services: true,
       },
     });
   }

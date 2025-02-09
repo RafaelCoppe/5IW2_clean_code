@@ -8,6 +8,7 @@ import {
 import { MotoModel } from './moto-model.entity';
 import { User } from './user.entity';
 import { Company } from './company.entity';
+import { MotoModelService } from './moto-model-service.entity';
 
 @Entity('moto')
 export class Moto {
@@ -36,11 +37,8 @@ export class Moto {
   @Column({ name: 'warranty_end', type: 'date' })
   warranty_end: Date;
 
-  @Column({ name: 'next_service_date', type: 'date' })
-  next_service_date: Date;
-
-  @Column({ name: 'next_service_distance', type: 'integer' })
-  next_service_distance: number;
+  @ManyToOne(() => MotoModelService, (service) => service.id)
+  next_service: MotoModelService;
 
   @ManyToOne(() => Company, (owner) => owner.id)
   @JoinColumn({ name: 'fk_dealer' })
