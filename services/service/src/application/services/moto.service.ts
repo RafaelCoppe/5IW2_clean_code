@@ -23,6 +23,14 @@ export class MotoService {
     return moto;
   }
 
+  async getMotosByOwner(owner_id: string): Promise<Moto[]> {
+    return this.motoRepository.findByOwner(owner_id);
+  }
+
+  async getMotosByCompany(company_id: string): Promise<Moto[]> {
+    return this.motoRepository.findByCompany(company_id);
+  }
+
   async updateMoto(id: string, updateMotoDto: UpdateMotoDto): Promise<void> {
     await this.getMotoById(id); // Check existence
     await this.motoRepository.update(id, updateMotoDto);

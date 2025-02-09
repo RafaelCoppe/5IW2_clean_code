@@ -1,22 +1,21 @@
 import React from "react";
 
-interface Maintenance {
-  id: number;
-  motoId: number;
-  date: string;
-  type: "preventive" | "curative";
-  cost?: number;
-  notes?: string;
+interface Services {
+  "id": number,
+  "date": string,
+  "cost": number,
+  "note": string,
+  "fk_parts": [],
 }
 
 interface MaintenanceTableProps {
-  maintenances: Maintenance[];
-  motoId?: number; // Prop optionnelle pour filtrer par moto
+  services: Services[];
+  company_type: string;
 }
 
 const MaintenanceTable: React.FC<MaintenanceTableProps> = ({
-  maintenances,
-  motoId,
+  services,
+  company_type
 }) => {
   // Fonction pour calculer le statut
   const getStatus = (date: string) => {
@@ -25,51 +24,54 @@ const MaintenanceTable: React.FC<MaintenanceTableProps> = ({
     return maintenanceDate < today ? "Effectué" : "Planifié";
   };
 
-  // Filtrer les entretiens pour une moto spécifique
-  const filteredMaintenances = motoId
-    ? maintenances.filter((item) => item.motoId === motoId)
-    : maintenances;
-
   return (
-    <table className="table-auto w-full border-collapse border border-gray-300">
-      <thead className="bg-gray-100">
-        <tr>
-          <th className="border px-4 py-2">Moto ID</th>
-          <th className="border px-4 py-2">Type</th>
-          <th className="border px-4 py-2">Date</th>
-          <th className="border px-4 py-2">Coût</th>
-          <th className="border px-4 py-2">Notes</th>
-          <th className="border px-4 py-2">Statut</th>
-          <th className="border px-4 py-2">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {filteredMaintenances.map((item) => (
-          <tr key={item.id} className="text-center">
-            <td className="border px-4 py-2">{item.motoId}</td>
-            <td className="border px-4 py-2">
-              {item.type === "preventive" ? "Préventif" : "Curatif"}
-            </td>
-            <td className="border px-4 py-2">{item.date}</td>
-            <td className="border px-4 py-2">
-              {item.cost ? `${item.cost} €` : "-"}
-            </td>
-            <td className="border px-4 py-2">{item.notes || "-"}</td>
-            <td className="border px-4 py-2">{getStatus(item.date)}</td>
-            <td className="border px-4 py-2">
-              <button
-                className="bg-blue-500 text-white px-3 py-1 rounded"
-                onClick={() =>
-                  (window.location.href = `/maintenances/${item.id}`)
-                }
-              >
-                Voir détails
-              </button>
-            </td>
+    services.length === 0 ? (
+      <p className="text-xl mb-4">Aucun entretien</p>
+    ) : (
+      <table className="table-auto w-full border-collapse border border-gray-300">
+        <thead className="bg-gray-100">
+          <tr>
+            <th className="border px-4 py-2">Date</th>
+            <th className="border px-4 py-2">Coût</th>
+            <th className="border px-4 py-2">Note</th>
+            <th className="border px-4 py-2">Pièces détachées</th>
+            {company_type == 'Concessionnaire' && <th className="border px-4 py-2">Actions</th>}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {services.map((item) => (
+            <tr key={item.id} className="text-center">
+              <td className="border px-4 py-2">{item.date}</td>
+              <td className="border px-4 py-2">
+                {item.cost ? `${item.cost} €` : "-"}
+              </td>
+              <td className="border px-4 py-2">{item.note}</td>
+              <td className="border px-4 py-2">
+                {item.fk_parts.length > 0
+                  ? (
+                    <ul className="list-disc list-inside">
+                      {item.fk_parts.map((part: object) => (
+                        <li key={part.id}>{part.label}</li>
+                      ))}
+                    </ul>
+                  )
+                  : "-"}
+              </td>
+              {company_type == 'Concessionnaire' && (<td className="border px-4 py-2">
+                <button
+                  className="bg-blue-500 text-white px-3 py-1 rounded"
+                  onClick={() =>
+                    (window.location.href = `/maintenances/${item.id}`)
+                  }
+                >
+                  Voir détails
+                </button>
+              </td>)}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )
   );
 };
 
