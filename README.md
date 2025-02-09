@@ -12,7 +12,7 @@
 
   ```sh
   cd services/service && npm install
-  cd ../../frontend/main && npm install
+  cd ../../frontends/main && npm install
   ```
 
 3. Créer les conteneurs :
