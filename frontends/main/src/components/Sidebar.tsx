@@ -95,14 +95,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
               Notifications
             </Link>
           </li>
-          <li>
-            <Link
-              to="/parametres"
-              className="block p-2 rounded-lg hover:bg-gray-700"
-            >
-              Paramètres
-            </Link>
-          </li>
         </ul>
       </nav>
       <div className="p-4 mt-auto">

@@ -107,7 +107,6 @@ const AppLayout: React.FC<{ user: object }> = ({ user }) => {
             />
 
             <Route path="/maintenances" element={<Maintenance />} />
-
             <Route path="/test-drives" element={<TestDrives />} />
             <Route
               path="/spare-parts/company"
