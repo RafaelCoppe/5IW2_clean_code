@@ -17,13 +17,6 @@ const MaintenanceTable: React.FC<MaintenanceTableProps> = ({
   services,
   company_type
 }) => {
-  // Fonction pour calculer le statut
-  const getStatus = (date: string) => {
-    const today = new Date();
-    const maintenanceDate = new Date(date);
-    return maintenanceDate < today ? "Effectué" : "Planifié";
-  };
-
   return (
     services.length === 0 ? (
       <p className="text-xl mb-4">Aucun entretien</p>

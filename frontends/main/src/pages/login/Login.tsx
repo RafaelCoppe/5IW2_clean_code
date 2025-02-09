@@ -21,7 +21,7 @@ const Login: React.FC = () => {
       .then((response) => {
         const data = response.data;
         dispatch(login(data));
-        navigate('/dashboard');
+        window.location.reload();
       })
       .catch(() => {
         setError("Email ou mot de passe invalide");

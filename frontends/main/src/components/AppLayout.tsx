@@ -64,7 +64,7 @@ const AppLayout: React.FC<{ user: object }> = ({ user }) => {
                 <Route path="/test-drives/edit/:id" element={<TestDriveEditPage />} />
 
                 <Route path="/maintenances/:id" element={<MaintenanceDetailsPage />} />
-                <Route path="/maintenances/add" element={<PlanMaintenance />} />
+                <Route path="/maintenances/add/:id" element={<PlanMaintenance />} />
 
                 <Route path="/motorcycles/add" element={<MotorcycleFormPage />} />
                 <Route path="/motorcycles/edit/:id" element={<AddEditMotorcycle />} />

@@ -28,37 +28,40 @@ const MaintenancePage: React.FC = () => {
     navigate(`/maintenances/${id}/edit`);
   };
 
-  const handleAdd = () => {
-    navigate(`/maintenances/add`);
+  const handleAdd = (moto_id) => {
+    navigate(`/maintenances/add/` + moto_id);
   };
 
   return (
     <div className="p-4 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-bold mb-6">Gestion des entretiens</h1>
 
-      <div className="flex justify-end mb-4">
-        {company_type == "Concessionnaire" && (
-            <button
-              onClick={handleAdd}
-              className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500"
-            >
-              Planifier un entretien
-            </button>
-        )}
-      </div>
+      {motos.map(function (moto) {
+        return (
+          <>
+            <div className="bg-white shadow-md rounded-lg p-4" key={moto.id}>
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-bold mb-4">{moto.fk_model.label}</h2>
+                {company_type == "Concessionnaire" && (
+                  <button
+                    onClick={() => handleAdd(moto.id)}
+                    className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500"
+                  >
+                    Planifier un entretien
+                  </button>
+                )}
+              </div>
+              {loading ? (
+                <p>Chargement des données...</p>
+              ) : (
+                <MaintenanceTable services={moto.services} company_type={company_type} />
+              )}
+            </div>
 
-      {motos.map(function(moto) {
-      return (
-        <div className="bg-white shadow-md rounded-lg p-4" key={moto.id}>
-          <h2 className="text-2xl font-bold mb-4">{moto.fk_model.label}</h2>
-          {loading ? (
-            <p>Chargement des données...</p>
-          ) : (
-            <MaintenanceTable services={moto.services} company_type={company_type}/>
-          )}
-        </div>
-      )
-    })}
+            <br />
+          </>
+        )
+      })}
     </div>
   );
 };
