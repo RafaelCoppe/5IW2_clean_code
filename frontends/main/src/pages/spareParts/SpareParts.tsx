@@ -5,10 +5,7 @@ import { useApi } from "../../context/ApiContext";
 interface SparePart {
   id: number;
   label: string;
-  description: string; // Y a pas 
-  price: number; // Y a pas 
-  stock: number; // Y a pas 
-  threshold: number; // Y a pas 
+  picture_link: string; // Ajout du lien de l'image
 }
 
 const SparePartsListPage: React.FC = () => {
@@ -17,9 +14,10 @@ const SparePartsListPage: React.FC = () => {
   const api = useApi();
 
   useEffect(() => {
-    api.get("spare_part", { credentials: 'include' })
-        .then((response) => setSpareParts(response.data))
-        .catch(console.error);
+    api
+      .get("spare_part", { credentials: "include" })
+      .then((response) => setSpareParts(response.data))
+      .catch(console.error);
   }, [api]);
 
   // Function to delete a spare part
@@ -41,8 +39,8 @@ const SparePartsListPage: React.FC = () => {
       {/* Button to go to the form page */}
       <div className="flex justify-end mb-4">
         <button
-          onClick={() => navigate("/spare-parts/add")} // Redirect to the form page
-          className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-blue-500"
+          onClick={() => navigate("/spare-parts/add")}
+          className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500"
         >
           Ajouter une pièce
         </button>
@@ -54,28 +52,22 @@ const SparePartsListPage: React.FC = () => {
         <table className="table-auto w-full border-collapse border border-gray-300">
           <thead className="bg-gray-100">
             <tr>
+              <th className="border px-4 py-2">Image</th>
               <th className="border px-4 py-2">Nom</th>
-              <th className="border px-4 py-2">Description</th>
-              <th className="border px-4 py-2">Prix (€)</th>
-              <th className="border px-4 py-2">Stock</th>
-              <th className="border px-4 py-2">Seuil critique</th>
               <th className="border px-4 py-2">Actions</th>
             </tr>
           </thead>
           <tbody>
             {spareParts.map((part) => (
               <tr key={part.id}>
-                <td className="border px-4 py-2">{part.label}</td>
-                <td className="border px-4 py-2">{part.description || "-"}</td>
-                <td className="border px-4 py-2">{part.price} €</td>
-                <td
-                  className={`border px-4 py-2 ${
-                    part.stock <= part.threshold ? "text-red-600" : ""
-                  }`}
-                >
-                  {part.stock}
+                <td className="border px-4 py-2">
+                  <img
+                    src={`images/${part.picture_link}`}
+                    alt={part.label}
+                    className="w-16 h-16 object-cover rounded-md shadow-md"
+                  />
                 </td>
-                <td className="border px-4 py-2">{part.threshold}</td>
+                <td className="border px-4 py-2">{part.label}</td>
                 <td className="border px-4 py-2">
                   <button
                     onClick={() => handleEdit(part.id)}

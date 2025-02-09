@@ -51,7 +51,6 @@ export class MotoRepository {
       relations: {
         fk_model: true,
         fk_dealer: true,
-        fk_owner: true,
         next_service: true,
       },
     });
@@ -65,6 +64,42 @@ export class MotoRepository {
         fk_dealer: true,
         fk_owner: true,
         next_service: true,
+      },
+    });
+  }
+
+  async findByOwner(owner_id: string): Promise<Moto[]> {
+    return this.repository.find({
+      where: {
+        fk_owner: {
+          id: owner_id,
+        },
+      },
+      relations: {
+        fk_model: true,
+        fk_dealer: true,
+        next_service: true,
+        services: {
+          fk_parts: true,
+        },
+      },
+    });
+  }
+
+  async findByCompany(company_id: string): Promise<Moto[]> {
+    return this.repository.find({
+      where: {
+        fk_dealer: {
+          id: company_id,
+        },
+      },
+      relations: {
+        fk_model: true,
+        fk_owner: true,
+        next_service: true,
+        services: {
+          fk_parts: true,
+        },
       },
     });
   }
