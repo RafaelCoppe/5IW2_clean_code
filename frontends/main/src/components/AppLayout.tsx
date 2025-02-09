@@ -5,7 +5,6 @@ import { Motorcycles } from "../pages/motorcycle/Motorcycles";
 import Maintenance from "../pages/maintenance/MaintenancePage";
 import SpareParts from "../pages/spareParts/SpareParts";
 import MaintenanceDetailsPage from "../pages/maintenance/MaintenanceDetailsPage";
-import MaintenanceFormPage from "../pages/maintenance/MaintenanceFormPage";
 import TestDrives from "../pages/testDrive/TestDrive";
 import Users from "../pages/user/Users";
 import Companies from "../pages/company/Company";
@@ -33,11 +32,13 @@ import CompanyEditPage from "../pages/company/CompanyEditPage";
 import DriverFormPage from "../pages/driver/DriverFormPage";
 import DriverEditPage from "../pages/driver/DriverEditPage";
 
-const AppLayout: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
+const AppLayout: React.FC<{ user: object }> = ({ user }) => {
+  const company_type = user.fk_company.type;
+
   return (
     <div className="flex h-screen overflow-hidden">
       {/* Sidebar */}
-      <Sidebar isAdmin={isAdmin} />
+      <Sidebar user={user} />
 
       {/* Main content */}
       <div className="flex-1 flex flex-col ml-64">
@@ -46,34 +47,47 @@ const AppLayout: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
         {/* Pages */}
         <main className="flex-1 p-4 bg-gray-100 mt-16 overflow-auto">
           <Routes>
+            {company_type == 'Concessionnaire' && 
+              <>
+                <Route path="/spare-parts" element={<SpareParts />} />
+                <Route path="/spare-parts/add" element={<SparePartFormPage />} />
+                <Route path="/spare-parts/edit/:id" element={<SparePartEditPage />} />
+
+                <Route path="/drivers" element={<Driver />} />
+                <Route path="/drivers/add" element={<DriverFormPage />} />
+                <Route path="/drivers/edit/:id" element={<DriverEditPage />} />
+
+                <Route path="/test-drives/add" element={<TestDriveFormPage />} />
+                <Route path="/test-drives/edit/:id" element={<TestDriveEditPage />} />
+
+                <Route path="/maintenances/:id" element={<MaintenanceDetailsPage />} />
+                <Route path="/maintenances/add" element={<PlanMaintenance />} />
+
+                <Route path="/motorcycles/add" element={<MotorcycleFormPage />} />
+                <Route path="/motorcycles/edit/:id" element={<AddEditMotorcycle />} />
+                <Route path="/motorcycles/:id" element={<MotorcycleDetails />} />
+              </>
+            }
+
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/motorcycles" element={<Motorcycles userRole={"dealer"} />} />
-            <Route path="/motorcycles/add" element={<MotorcycleFormPage />} />
-            <Route path="/motorcycles/edit/:id" element={<AddEditMotorcycle />} />
-            <Route path="/motorcycles/:id" element={<MotorcycleDetails />} />
 
             <Route path="/maintenances" element={<Maintenance />} />
-            <Route path="/maintenances/:id" element={<MaintenanceDetailsPage />} />
-            <Route path="/maintenances/add" element={<PlanMaintenance />} />
-            <Route path="/spare-parts" element={<SpareParts />} />
-            <Route path="/spare-parts/add" element={<SparePartFormPage />} />
-            <Route path="/spare-parts/edit/:id" element={<SparePartEditPage />} />
+
             <Route path="/test-drives" element={<TestDrives />} />
-            <Route path="/test-drives/add" element={<TestDriveFormPage />} />
-            <Route path="/test-drives/edit/:id" element={<TestDriveEditPage />} />
 
-            {isAdmin && <Route path="/users" element={<Users />} />}
-            <Route path="/users/add" element={<UserFormPage />} />
-            <Route path="/users/edit/:id" element={<UserEditPage />} />
+            { user.is_admin &&
+              <>
+                <Route path="/users" element={<Users />} />
+                <Route path="/users/add" element={<UserFormPage />} />
+                <Route path="/users/edit/:id" element={<UserEditPage />} />
 
-            <Route path="/drivers" element={<Driver />} />
-            <Route path="/drivers/add" element={<DriverFormPage />} />
-            <Route path="/drivers/edit/:id" element={<DriverEditPage />} />
+                <Route path="/companies" element={<Companies />} />
+                <Route path="/companies/add" element={<CompanyFormPage />} />
+                <Route path="/companies/edit/:id" element={<CompanyEditPage />} />
+              </>
+            }
 
-            <Route path="/companies" element={<Companies />} />
-            <Route path="/companies/add" element={<CompanyFormPage />} />
-            <Route path="/companies/edit/:id" element={<CompanyEditPage />} />
-            
             <Route path="/notifications" element={<Notifications />} />
             {/* <Route path="/settings" element={<Settings />} /> */}
           </Routes>
