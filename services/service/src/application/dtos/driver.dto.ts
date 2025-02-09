@@ -1,4 +1,5 @@
 import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
+import { DriverStatus } from 'src/domain/entities/driver-status.entity';
 
 export class CreateDriverDto {
   @IsString()
@@ -7,7 +8,7 @@ export class CreateDriverDto {
 
   @IsNotEmpty()
   @IsNumber()
-  fk_status: number;
+  fk_status: DriverStatus;
 
   @IsString()
   @IsNotEmpty()

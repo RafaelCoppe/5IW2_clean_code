@@ -18,7 +18,7 @@ export class Driver {
 
   @ManyToOne(() => DriverStatus, (driverStatus) => driverStatus.id)
   @JoinColumn({ name: 'fk_status' })
-  fk_status: number;
+  fk_status: DriverStatus;
 
   @Column({ name: 'license_link', type: 'varchar' })
   license_link: string;
