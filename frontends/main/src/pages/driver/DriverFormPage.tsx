@@ -8,24 +8,14 @@ interface User {
   last_name: string;
 }
 
-interface Motorcycle {
-  id: string;
-  serial_number: string;
-  fk_model: {
-    label: string;
-  };
-}
-
 const DriverFormPage: React.FC = () => {
   const [formData, setFormData] = useState({
     fk_user: '',
     license_link: '',
     experience: '',
-    motorcycle_id: '',
   });
 
   const [users, setUsers] = useState<User[]>([]);
-  const [motorcycles, setMotorcycles] = useState<Motorcycle[]>([]);
   const navigate = useNavigate();
   const api = useApi();
 
@@ -35,14 +25,6 @@ const DriverFormPage: React.FC = () => {
       .then((response) => {
         const filteredUsers = response.data.filter((user: any) => user.driver === null);
         setUsers(filteredUsers);
-      })
-      .catch(console.error);
-
-    // Fetch motorcycles from the API
-    api.get('moto', { credentials: 'include' })
-      .then((response) => {
-        const filteredMotorcycles = response.data.filter((motorcycle: any) => motorcycle.fk_owner === null);
-        setMotorcycles(filteredMotorcycles);
       })
       .catch(console.error);
   }, [api]);
@@ -59,10 +41,6 @@ const DriverFormPage: React.FC = () => {
       const response = await api.post('driver', dataToSend);
       if (response.status === 201) {
         console.log('Nouveau conducteur ajouté :', dataToSend);
-        if (formData.motorcycle_id) {
-          await api.put(`moto/${formData.motorcycle_id}`, { fk_owner: { id: formData.fk_user } });
-          console.log('Moto liée au conducteur :', formData.motorcycle_id);
-        }
         navigate('/drivers'); // Return to the list after submission
       } else {
         const errorText = await response.data;
@@ -113,21 +91,6 @@ const DriverFormPage: React.FC = () => {
             className="w-full border p-2 rounded-md"
             required
           />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-2">Moto (optionnel)</label>
-          <select
-            value={formData.motorcycle_id}
-            onChange={(e) => setFormData({ ...formData, motorcycle_id: e.target.value })}
-            className="w-full border p-2 rounded-md"
-          >
-            <option value="">Sélectionnez une moto</option>
-            {motorcycles.map((moto) => (
-              <option key={moto.id} value={moto.id}>
-                {moto.serial_number} - {moto.fk_model.label}
-              </option>
-            ))}
-          </select>
         </div>
         <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-500">
           Ajouter

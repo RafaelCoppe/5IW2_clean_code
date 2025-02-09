@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useApi } from "../../context/ApiContext";
 
@@ -6,11 +6,6 @@ interface User {
   id: string;
   first_name: string;
   last_name: string;
-}
-
-interface Motorcycle {
-  id: string;
-  serial_number: string;
 }
 
 const DriverEditPage: React.FC = () => {
@@ -22,11 +17,11 @@ const DriverEditPage: React.FC = () => {
     fk_user: '',
     license_link: '',
     experience: '',
-    motorcycle_id: '',
   });
 
   const [users, setUsers] = useState<User[]>([]);
-  const [motorcycles, setMotorcycles] = useState<Motorcycle[]>([]);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,10 +30,6 @@ const DriverEditPage: React.FC = () => {
         const userResponse = await api.get('user', { credentials: 'include' });
         const filteredUsers = userResponse.data.filter((user: any) => user.driver !== null);
         setUsers(filteredUsers);
-
-        // Fetch motorcycles from the API
-        const motoResponse = await api.get('moto', { credentials: 'include' });
-        setMotorcycles(motoResponse.data);
 
         if (id) {
           const driverData = filteredUsers.find((user: any) => user.driver.fk_user === id);
@@ -49,7 +40,6 @@ const DriverEditPage: React.FC = () => {
               fk_user: driverData.id,
               license_link: driverData.driver.license_link,
               experience: driverData.driver.experience,
-              motorcycle_id: driverData.driver.motorcycle_id || '',
             });
           }
         }
@@ -60,6 +50,15 @@ const DriverEditPage: React.FC = () => {
 
     fetchData();
   }, [api, id]);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedFile(e.target.files[0]);
+      const fileName = e.target.files[0].name;
+      const licenseLink = `/licenses/${fileName}`;
+      setFormData({ ...formData, license_link: licenseLink });
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,15 +77,16 @@ const DriverEditPage: React.FC = () => {
         console.log("Added driver:", dataToSend);
       }
 
-      if (formData.motorcycle_id) {
-        await api.put(`moto/${formData.motorcycle_id}`, { fk_owner: { id: formData.fk_user } });
-        console.log('Moto liée au conducteur :', formData.motorcycle_id);
-      }
-
       navigate("/drivers");
     } catch (error) {
       console.error("Erreur lors de la soumission du conducteur:", error);
       alert("Erreur lors de la soumission du conducteur.");
+    }
+  };
+
+  const triggerFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
     }
   };
 
@@ -113,16 +113,6 @@ const DriverEditPage: React.FC = () => {
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-2">Lien du permis</label>
-          <input
-            type="text"
-            value={formData.license_link}
-            onChange={(e) => setFormData({ ...formData, license_link: e.target.value })}
-            className="w-full border p-2 rounded-md"
-            required
-          />
-        </div>
-        <div>
           <label className="block text-sm font-medium mb-2">Expérience</label>
           <textarea
             value={formData.experience}
@@ -132,19 +122,23 @@ const DriverEditPage: React.FC = () => {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-2">Moto (optionnel)</label>
-          <select
-            value={formData.motorcycle_id}
-            onChange={(e) => setFormData({ ...formData, motorcycle_id: e.target.value })}
-            className="w-full border p-2 rounded-md"
+          <label className="block text-sm font-medium mb-2">Ajouter votre permis</label>
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            className="hidden"
+          />
+          {selectedFile && (
+            <p className="text-sm text-gray-600 mb-2">{selectedFile.name}</p>
+          )}
+          <button
+            type="button"
+            onClick={triggerFileInput}
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-500 mt-2"
           >
-            <option value="">Sélectionnez une moto</option>
-            {motorcycles.map((moto) => (
-              <option key={moto.id} value={moto.id}>
-                {moto.serial_number}
-              </option>
-            ))}
-          </select>
+            Upload File
+          </button>
         </div>
         <button
           type="submit"
