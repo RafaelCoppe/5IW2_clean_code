@@ -19,6 +19,10 @@ export class TestDriveService {
     return this.testDriveRepository.findByMoto(moto_id);
   }
 
+  async findByCompany(company_id: string): Promise<TestDrive[]> {
+    return this.testDriveRepository.findByCompany(company_id);
+  }
+
   async getTestDriveById(id: number): Promise<TestDrive> {
     const moto = await this.testDriveRepository.findOne(id);
     if (!moto) {
