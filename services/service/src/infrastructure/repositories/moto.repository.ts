@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { identity } from 'rxjs';
+import { MotoModel } from 'src/domain/entities/moto-model.entity';
 import { Moto } from 'src/domain/entities/moto.entity';
 import { Repository } from 'typeorm';
 
@@ -8,9 +10,39 @@ export class MotoRepository {
   constructor(
     @InjectRepository(Moto)
     private readonly repository: Repository<Moto>,
+
+    @InjectRepository(MotoModel)
+    private readonly motoModelRepository: Repository<MotoModel>,
   ) {}
 
   async create(moto: Partial<Moto>): Promise<Moto> {
+    const model = await this.motoModelRepository.findOne({
+      where: {
+        id: moto.fk_model.id,
+      },
+      relations: {
+        services: true,
+      },
+    });
+
+    if (!model) {
+      throw new Error('Model not found');
+    }
+
+    if (model.services.length > 0) {
+      const next_service = model.services.find((service) => {
+        return service.position === 1;
+      });
+
+      if (!next_service) {
+        throw new Error('Service not found');
+      }
+
+      moto.next_service = next_service;
+    } else {
+      moto.next_service = null;
+    }
+
     return this.repository.save(moto);
   }
 
@@ -20,6 +52,7 @@ export class MotoRepository {
         fk_model: true,
         fk_dealer: true,
         fk_owner: true,
+        next_service: true,
       },
     });
   }
@@ -31,6 +64,7 @@ export class MotoRepository {
         fk_model: true,
         fk_dealer: true,
         fk_owner: true,
+        next_service: true,
       },
     });
   }
