@@ -33,6 +33,7 @@ services:
     environment:
       DATABASE_URL: postgres://triumph_psql_user:triumph_psql_password@postgres:5432/triumph_psql_db
       MONGO_URL: mongodb://triumph_mongo_user:05Dr8(3X9pok]=-ON1/&@mongodb:27017
+      JWT_SECRET_KEY: cbb73d2386ce79d69c103b1bd01a91e65d7915c891614ea42da7509ee1ba4c759eaa3775f0e7bd28cadd33c931c953d876ce9490d0acd149e4bff5592e79c969625034ffdb069743920fc42e99747b6002bb7882d863a360e5e6fb34636967e9048ae83d83dccbcf9a18c7b5343635847ee5938fe63847dd85903cf9eceb8b2b39a18a55f67346dd7d74e78688a47997928e0d0c77504a1b328f078be9bf846e61a5b8a437dd751ed067798d0d17bc43f6e172f7390d95fbbaf06896786746f75b8e19df3830db8fe8fa86c5cec7b1395adaf55e77d16f902ed62489c39fdae37ec682229c5a944bf7ee00fe00dfef6c99f69200268139d66a02994beaa4c8ae
     ports:
       - "3001:3001"
     depends_on:

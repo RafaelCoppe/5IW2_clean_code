@@ -1,19 +1,31 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useApi } from '../../context/ApiContext';
+import { login } from '../../slices/authSlice';
 
 const Login: React.FC = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const api = useApi();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate login logic
-    console.log('Login data:', formData);
-    navigate('/dashboard'); // Redirect to the dashboard after login
+    setError(null);
+
+    api.login(email, password)
+      .then((response) => {
+        const data = response.data;
+        dispatch(login(data));
+        navigate('/dashboard');
+      })
+      .catch(() => {
+        setError("Email ou mot de passe invalide");
+      });
   };
 
   return (
@@ -25,8 +37,8 @@ const Login: React.FC = () => {
             <label className="block text-sm font-medium mb-2">Email</label>
             <input
               type="email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full border p-2 rounded-md"
               required
             />
@@ -35,8 +47,8 @@ const Login: React.FC = () => {
             <label className="block text-sm font-medium mb-2">Password</label>
             <input
               type="password"
-              value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full border p-2 rounded-md"
               required
             />
@@ -44,6 +56,7 @@ const Login: React.FC = () => {
           <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-500">
             Login
           </button>
+          {error && <p className="text-red-500 text-center">{error}</p>}
         </form>
       </div>
     </div>
