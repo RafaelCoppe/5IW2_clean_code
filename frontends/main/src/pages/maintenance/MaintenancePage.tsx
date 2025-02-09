@@ -24,10 +24,6 @@ const MaintenancePage: React.FC = () => {
     setLoading(false);
   }, [api, company_type, user.fk_company.id, user.id]);
 
-  const handleEdit = (id: number) => {
-    navigate(`/maintenances/${id}/edit`);
-  };
-
   const handleAdd = (moto_id) => {
     navigate(`/maintenances/add/` + moto_id);
   };
@@ -41,7 +37,7 @@ const MaintenancePage: React.FC = () => {
           <>
             <div className="bg-white shadow-md rounded-lg p-4" key={moto.id}>
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold mb-4">{moto.fk_model.label}</h2>
+                <h2 className="text-2xl font-bold mb-4">{moto.fk_model.label} - {moto.serial_number}</h2>
                 {company_type == "Concessionnaire" && (
                   <button
                     onClick={() => handleAdd(moto.id)}

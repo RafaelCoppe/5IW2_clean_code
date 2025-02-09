@@ -1,6 +1,6 @@
 import React from "react";
 
-interface Services {
+interface Service {
   "id": number,
   "date": string,
   "cost": number,
@@ -9,7 +9,7 @@ interface Services {
 }
 
 interface MaintenanceTableProps {
-  services: Services[];
+  services: Service[];
   company_type: string;
 }
 
