@@ -6,9 +6,9 @@ interface SidebarProps {
 }
 
 const handleDisconnect = () => {
-  localStorage.removeItem('token');
+  localStorage.removeItem("token");
   window.location.reload();
-}
+};
 
 export const Sidebar: React.FC<SidebarProps> = ({ isAdmin }) => {
   return (
@@ -42,7 +42,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isAdmin }) => {
           </li>
           <li>
             <Link
-              to="/spare-parts"
+              to="/spare-parts/company"
               className="block p-2 rounded-lg hover:bg-gray-700"
             >
               Gestion des pièces
@@ -101,7 +101,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isAdmin }) => {
         </ul>
       </nav>
       <div className="p-4 mt-auto">
-        <button className="w-full p-2 bg-red-600 rounded-lg hover:bg-red-500" onClick={() => handleDisconnect()}>
+        <button
+          className="w-full p-2 bg-red-600 rounded-lg hover:bg-red-500"
+          onClick={() => handleDisconnect()}
+        >
           Déconnexion
         </button>
       </div>

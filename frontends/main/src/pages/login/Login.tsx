@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { useApi } from '../../context/ApiContext';
-import { login } from '../../slices/authSlice';
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useApi } from "../../context/ApiContext";
+import { login } from "../../slices/authSlice";
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const dispatch = useDispatch();
@@ -17,11 +17,13 @@ const Login: React.FC = () => {
     e.preventDefault();
     setError(null);
 
-    api.login(email, password)
+    api
+      .login(email, password)
       .then((response) => {
         const data = response.data;
+        console.log("Données de l'utilisateur connecté :", data);
         dispatch(login(data));
-        navigate('/dashboard');
+        navigate("/dashboard");
       })
       .catch(() => {
         setError("Email ou mot de passe invalide");
@@ -53,7 +55,10 @@ const Login: React.FC = () => {
               required
             />
           </div>
-          <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-500">
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-500"
+          >
             Login
           </button>
           {error && <p className="text-red-500 text-center">{error}</p>}

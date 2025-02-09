@@ -67,7 +67,7 @@ const AppLayout: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
             />
             <Route path="/maintenances/add" element={<PlanMaintenance />} />
             <Route path="/spare-parts" element={<SpareParts />} />
-            <Route path="/spare-parts/add" element={<SparePartFormPage />} />
+            {/* <Route path="/spare-parts/add" element={<SparePartFormPage />} /> */}
             <Route
               path="/spare-parts/edit/:id"
               element={<SparePartEditPage />}
@@ -79,7 +79,7 @@ const AppLayout: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
               element={<TestDriveEditPage />}
             />
             <Route
-              path="/spare-parts/company/:id"
+              path="/spare-parts/company"
               element={<SparePartsByCompany />}
             />
             spare-parts/3/edit
@@ -87,10 +87,7 @@ const AppLayout: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
               path="/spare-parts/:id/edit"
               element={<EditSparePartCommand />}
             />
-            <Route
-              path="/spare-parts/:id/add"
-              element={<AddSparePartCommand />}
-            />
+            <Route path="/spare-parts/add" element={<AddSparePartCommand />} />
             {isAdmin && <Route path="/users" element={<Users />} />}
             <Route path="/users/add" element={<UserFormPage />} />
             <Route path="/users/edit/:id" element={<UserEditPage />} />

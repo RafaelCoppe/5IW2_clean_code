@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
+import { RootState } from "../../services/store";
 
 const SparePartEditPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const id = useSelector((state: RootState) => state.auth.user?.company?.id); // Récupère l'ID de l'entreprise
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
