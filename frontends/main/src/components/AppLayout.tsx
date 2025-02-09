@@ -10,6 +10,7 @@ import TestDrives from "../pages/testDrive/TestDrive";
 import Users from "../pages/user/Users";
 import Companies from "../pages/company/Company";
 import Notifications from "../pages/notification/Notifications";
+import Driver from "../pages/driver/Driver";
 // import Settings from "../pages/Settings";
 import { Sidebar } from "./Sidebar";
 import { TopBar } from "./Topbar";
@@ -28,6 +29,9 @@ import TestDriveEditPage from "../pages/testDrive/TestDriveEditPage";
 
 import CompanyFormPage from "../pages/company/CompanyFormPage";
 import CompanyEditPage from "../pages/company/CompanyEditPage";
+
+import DriverFormPage from "../pages/driver/DriverFormPage";
+import DriverEditPage from "../pages/driver/DriverEditPage";
 
 const AppLayout: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
   return (
@@ -61,6 +65,10 @@ const AppLayout: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
             {isAdmin && <Route path="/users" element={<Users />} />}
             <Route path="/users/add" element={<UserFormPage />} />
             <Route path="/users/edit/:id" element={<UserEditPage />} />
+
+            <Route path="/drivers" element={<Driver />} />
+            <Route path="/drivers/add" element={<DriverFormPage />} />
+            <Route path="/drivers/edit/:id" element={<DriverEditPage />} />
 
             <Route path="/companies" element={<Companies />} />
             <Route path="/companies/add" element={<CompanyFormPage />} />
