@@ -38,7 +38,9 @@ export class UserRepository {
           fk_type: true,
         },
         motos: true,
-        driver: true,
+        driver: {
+          fk_status: true,
+        },
       },
     });
   }
@@ -51,7 +53,9 @@ export class UserRepository {
           fk_type: true,
         },
         motos: true,
-        driver: true,
+        driver: {
+          fk_status: true,
+        },
       },
     });
   }
