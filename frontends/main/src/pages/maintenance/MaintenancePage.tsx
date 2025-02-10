@@ -12,6 +12,7 @@ const MaintenancePage: React.FC = () => {
 
   const user = useSelector((state: RootState) => state.auth.user);
   const company_type = user.fk_company.type;
+  const isAdmin = user.is_admin;
 
   const navigate = useNavigate();
   const api = useApi();
@@ -38,7 +39,7 @@ const MaintenancePage: React.FC = () => {
             <div className="bg-white shadow-md rounded-lg p-4" key={moto.id}>
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-bold mb-4">{moto.fk_model.label} - {moto.serial_number}</h2>
-                {company_type == "Concessionnaire" && (
+                {company_type == "Concessionnaire" && !isAdmin && (
                   <button
                     onClick={() => handleAdd(moto.id)}
                     className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500"
@@ -50,7 +51,7 @@ const MaintenancePage: React.FC = () => {
               {loading ? (
                 <p>Chargement des données...</p>
               ) : (
-                <MaintenanceTable services={moto.services} company_type={company_type} />
+                <MaintenanceTable services={moto.services} company_type={company_type} isAdmin={isAdmin} />
               )}
             </div>
 

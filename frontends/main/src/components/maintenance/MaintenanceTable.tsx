@@ -11,11 +11,14 @@ interface Service {
 interface MaintenanceTableProps {
   services: Service[];
   company_type: string;
+  is_admin: boolean;
 }
 
 const MaintenanceTable: React.FC<MaintenanceTableProps> = ({
   services,
-  company_type
+  company_type,
+  is_admin
+
 }) => {
   return (
     services.length === 0 ? (
@@ -28,7 +31,7 @@ const MaintenanceTable: React.FC<MaintenanceTableProps> = ({
             <th className="border px-4 py-2">Coût</th>
             <th className="border px-4 py-2">Note</th>
             <th className="border px-4 py-2">Pièces détachées</th>
-            {company_type == 'Concessionnaire' && <th className="border px-4 py-2">Actions</th>}
+            {company_type == 'Concessionnaire' && !is_admin && <th className="border px-4 py-2">Actions</th>}
           </tr>
         </thead>
         <tbody>

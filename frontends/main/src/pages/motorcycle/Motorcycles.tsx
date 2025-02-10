@@ -24,6 +24,7 @@ export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
   const navigate = useNavigate();
   const [motorcycles, setMotorcycles] = useState<Motorcycle[]>([]);
   const user = useSelector((state: RootState) => state.auth.user);
+  const isAdmin = user.is_admin;
   const company_type = user.fk_company.type;
 
   useEffect(() => {
@@ -58,7 +59,7 @@ export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
   return (
     <div className="p-4 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-bold mb-6">Gestion des motos</h1>
-      {company_type == "Concessionnaire" && (
+      {company_type == "Concessionnaire" && !isAdmin && (
 
       <div className="flex justify-end mb-4">
         <button
@@ -78,7 +79,7 @@ export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
               <th className="border px-4 py-2">Numéro de série</th>
               <th className="border px-4 py-2">Concessionnaire</th>
               <th className="border px-4 py-2">Propriétaire</th>
-              {company_type == "Concessionnaire" && (
+              {company_type == "Concessionnaire" && !isAdmin && (
 
               <th className="border px-4 py-2">Actions</th>
                 )}
@@ -91,7 +92,7 @@ export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
                 <td className="border px-4 py-2">{moto.serial_number}</td>
                 <td className="border px-4 py-2">{moto.fk_dealer ? moto.fk_dealer.name : ''}</td>
                 <td className="border px-4 py-2">{moto.fk_owner ? (moto.fk_owner.last_name.toUpperCase() + ' ' + moto.fk_owner.first_name) : ''}</td>
-                {company_type == "Concessionnaire" && (
+                {company_type == "Concessionnaire" && !isAdmin && (
 
                 <td className="border px-4 py-2">
                   <button
