@@ -79,6 +79,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
               </Link>
             </li>
           )}
+          }
+          {user.is_admin && (
           <li>
             <Link
               to="/companies"
@@ -87,6 +89,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
               Gestion des entreprises
             </Link>
           </li>
+          )}
           <li>
             <Link
               to="/notifications"

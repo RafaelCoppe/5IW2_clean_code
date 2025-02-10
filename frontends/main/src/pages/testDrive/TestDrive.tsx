@@ -31,9 +31,9 @@ const TestDrives: React.FC = () => {
 
   useEffect(() => {
     const fetchTestDrives = async () => {
-      if (user && user.company.id) {
+      if (user && user.fk_company.id) {
         try {
-          const response = await api.get(`test_drive/company/${user.company.id}`, { credentials: 'include' });
+          const response = await api.get(`test_drive/company/${user.fk_company.id}`, { credentials: 'include' });
           setTestDrives(response.data);
         } catch (error) {
           console.error('Erreur lors de la récupération des Test Drives :', error);
