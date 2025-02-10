@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useApi } from "../../context/ApiContext";
 import { SparePart } from "../../types/spartPart";
+import { useSelector } from "react-redux";
+import { RootState } from "../../services/store";
 
 const AddSparePartCommand: React.FC = () => {
-  const { id } = useParams<{ id: string }>(); // ID de l'entreprise
+  const id = useSelector((state: RootState) => state.auth.user?.company?.id); // Récupère l'ID de l'entreprise
+
   const navigate = useNavigate();
   const api = useApi();
 

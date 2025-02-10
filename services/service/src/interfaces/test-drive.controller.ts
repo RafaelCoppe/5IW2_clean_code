@@ -9,6 +9,11 @@ import {
 export class TestDriveController {
   constructor(private readonly testDriveService: TestDriveService) {}
 
+  @Get()
+  async getAllTestDrives() {
+    return this.testDriveService.getAllTestDrives();
+  }
+
   @Get(':id')
   async getTestDrive(@Param('id') id: number) {
     return this.testDriveService.getTestDriveById(id);

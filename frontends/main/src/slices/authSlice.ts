@@ -1,10 +1,23 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import * as jwt from "jsonwebtoken";
+interface Company {
+  id: string;
+  name: string;
+}
+
+interface AuthUser {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  company?: Company; // L'entreprise associée à l'utilisateur
+  token: string;
+}
 
 interface AuthState {
   token: string | null;
   isAuthenticated: boolean;
-  user: object;
+  user: AuthUser | null;
 }
 
 const isTokenValid = (token: string | null): boolean => {
@@ -19,7 +32,9 @@ const isTokenValid = (token: string | null): boolean => {
 };
 
 const storedToken = localStorage.getItem("token");
-const decodedToken = storedToken ? JSON.parse(atob(storedToken.split(".")[1])) : null;
+const decodedToken = storedToken
+  ? JSON.parse(atob(storedToken.split(".")[1]))
+  : null;
 
 const initialState: AuthState = {
   token: isTokenValid(storedToken) ? storedToken : null,
@@ -38,7 +53,7 @@ const authSlice = createSlice({
         state.user = {};
         return;
       }
-      
+
       state.token = action.payload.token;
       state.isAuthenticated = true;
       state.user = action.payload;

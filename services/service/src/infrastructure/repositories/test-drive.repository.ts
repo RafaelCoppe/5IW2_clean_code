@@ -74,4 +74,14 @@ export class TestDriveRepository {
   async update(id: number, driver: Partial<TestDrive>): Promise<void> {
     await this.repository.update(id, driver);
   }
+
+  async findAll(): Promise<TestDrive[]> {
+    return this.repository.find({
+      relations: {
+        fk_driver: true,
+        fk_moto: true,
+        fk_incident: true,
+      },
+    });
+  }
 }

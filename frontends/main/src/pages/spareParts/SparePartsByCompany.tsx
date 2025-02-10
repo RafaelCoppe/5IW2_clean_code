@@ -2,18 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useApi } from "../../context/ApiContext";
 import { SparePartCommand } from "../../types/spartPart";
+import { useSelector } from "react-redux";
+import { RootState } from "../../services/store";
 
 const SparePartsByCompany: React.FC = () => {
-  const { id } = useParams(); // Récupération de l'ID de l'entreprise depuis l'URL
+  //   const { id } = useParams(); // Récupération de l'ID de l'entreprise depuis l'URL
+  const id = useSelector((state: RootState) => state.auth.user?.fk_company?.id); // Récupère l'ID de l'entreprise
+  console.log("ID de l'entreprise de l'utilisateur connecté :", id); // Debug
   const [spareParts, setSpareParts] = useState<SparePartCommand[]>([]);
   const api = useApi();
   const navigate = useNavigate(); // Pour naviguer entre les pages
 
   useEffect(() => {
     api
-      .get(`spare_part_command/company/${id}`, { credentials: "include" }) // ✅ Route correcte
+      .get(`spare_part_command/company/${id}`, { credentials: "include" })
       .then((response) => {
-        console.log("Réponse API :", response.data); // ✅ Debugging
+        // console.log("Réponse API :", response.data); // ✅ Debugging
         setSpareParts(response.data);
       })
       .catch(console.error);
@@ -28,7 +32,7 @@ const SparePartsByCompany: React.FC = () => {
       {/* Bouton pour ajouter une commande */}
       <div className="flex justify-end mb-4">
         <button
-          onClick={() => navigate(`/spare-parts/${id}/add`)} // Redirection vers la page d'ajout
+          onClick={() => navigate(`/spare-parts/add`)} // Redirection vers la page d'ajout
           className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500"
         >
           Ajouter une commande

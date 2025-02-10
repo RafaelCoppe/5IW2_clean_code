@@ -6,9 +6,9 @@ interface SidebarProps {
 }
 
 const handleDisconnect = () => {
-  localStorage.removeItem('token');
+  localStorage.removeItem("token");
   window.location.reload();
-}
+};
 
 export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
   const company_type = user.fk_company.type;
@@ -26,7 +26,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
               Dashboard
             </Link>
           </li>
-          { }
+          {}
           <li>
             <Link
               to="/motorcycles"
@@ -43,16 +43,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
               Gestion des entretiens
             </Link>
           </li>
-          {company_type == 'Concessionnaire' &&
-            <li>
-              <Link
-                to="/spare-parts"
-                className="block p-2 rounded-lg hover:bg-gray-700"
-              >
-                Gestion des pièces
-              </Link>
-            </li>
-          }
+          <li>
+            <Link
+              to="/spare-parts/company"
+              className="block p-2 rounded-lg hover:bg-gray-700"
+            >
+              Gestion des pièces
+            </Link>
+          </li>
           <li>
             <Link
               to="/test-drives"
@@ -71,7 +69,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
               </Link>
             </li>
           )}
-          {company_type == 'Concessionnaire' &&
+          {company_type == "Concessionnaire" && (
             <li>
               <Link
                 to="/drivers"
@@ -80,6 +78,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
                 Gestion des conducteurs
               </Link>
             </li>
+          )}
           }
           {user.is_admin && (
           <li>
@@ -102,7 +101,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
         </ul>
       </nav>
       <div className="p-4 mt-auto">
-        <button className="w-full p-2 bg-red-600 rounded-lg hover:bg-red-500" onClick={() => handleDisconnect()}>
+        <button
+          className="w-full p-2 bg-red-600 rounded-lg hover:bg-red-500"
+          onClick={() => handleDisconnect()}
+        >
           Déconnexion
         </button>
       </div>
