@@ -43,6 +43,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
               Gestion des entretiens
             </Link>
           </li>
+          {company_type == "Concessionnaire" && (
+
           <li>
             <Link
               to="/spare-parts/company"
@@ -51,6 +53,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
               Gestion des pièces
             </Link>
           </li>
+            )}
           <li>
             <Link
               to="/test-drives"
@@ -79,7 +82,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
               </Link>
             </li>
           )}
-          }
+          
           {user.is_admin && (
           <li>
             <Link

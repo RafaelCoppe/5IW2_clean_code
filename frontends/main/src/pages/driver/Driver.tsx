@@ -30,6 +30,8 @@ export const Driver: React.FC = () => {
           user.driver.fk_status &&
           user.driver.fk_status.id === 1
         );
+        console.log('Conducteurs :', filteredUsers);
+
         setDrivers(filteredUsers.map((user: any) => ({
           id: user.driver.id,
           fk_user: {
@@ -44,6 +46,7 @@ export const Driver: React.FC = () => {
       })
       .catch(console.error);
   }, [api]);
+
 
   const handleDelete = async (id: string) => {
     if (window.confirm("Voulez-vous vraiment supprimer ce conducteur ?")) {

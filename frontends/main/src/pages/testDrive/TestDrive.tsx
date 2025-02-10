@@ -28,6 +28,7 @@ const TestDrives: React.FC = () => {
   const navigate = useNavigate();
   const api = useApi();
   const user = useSelector((state: RootState) => state.auth.user);
+  const company_type = user.fk_company.type;
 
   useEffect(() => {
     const fetchTestDrives = async () => {
@@ -97,8 +98,10 @@ const TestDrives: React.FC = () => {
   return (
     <div className="p-4 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-bold mb-6">Test Drives</h1>
+      {company_type == "Concessionnaire" && (
 
       <div className="flex justify-end mb-4">
+        
         <button
           onClick={handleAdd}
           className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500"
@@ -112,7 +115,7 @@ const TestDrives: React.FC = () => {
           Supprimer tous les Test Drives
         </button>
       </div>
-
+        )}
       <div className="bg-white shadow-md rounded-lg p-4">
         <h2 className="text-2xl font-bold mb-4">Liste des Test Drives</h2>
         <table className="table-auto w-full border-collapse border border-gray-300">
@@ -122,7 +125,9 @@ const TestDrives: React.FC = () => {
               <th className="border px-4 py-2">Véhicule</th>
               <th className="border px-4 py-2">Date</th>
               <th className="border px-4 py-2">Durée</th>
+              {company_type == "Concessionnaire" && (
               <th className="border px-4 py-2">Actions</th>
+                )}
             </tr>
           </thead>
           <tbody>
@@ -132,6 +137,7 @@ const TestDrives: React.FC = () => {
                 <td className="border px-4 py-2">{td.fk_moto.serial_number}</td>
                 <td className="border px-4 py-2">{format(new Date(td.date), 'dd/MM/yyyy')}</td>
                 <td className="border px-4 py-2">{formatDuration(Number(td.duration))}</td>
+                {company_type == "Concessionnaire" && (
                 <td className="border px-4 py-2">
                   <button
                     onClick={() => handleEdit(td.id)}
@@ -146,6 +152,7 @@ const TestDrives: React.FC = () => {
                     Supprimer
                   </button>
                 </td>
+                    )}
               </tr>
             ))}
           </tbody>
