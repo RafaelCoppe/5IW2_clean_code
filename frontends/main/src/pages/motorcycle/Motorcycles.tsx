@@ -77,8 +77,13 @@ export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
             <tr>
               <th className="border px-4 py-2">Modèle</th>
               <th className="border px-4 py-2">Numéro de série</th>
-              <th className="border px-4 py-2">Concessionnaire</th>
-              <th className="border px-4 py-2">Propriétaire</th>
+              <th className="border px-4 py-2">Prochain Entretien</th>
+              {company_type == "Concessionnaire" ? (
+                <th className="border px-4 py-2">Propriétaire</th>
+              ) : 
+              (
+                <th className="border px-4 py-2">Concessionnaire</th>
+              )}
               {company_type == "Concessionnaire" && !isAdmin && (
 
               <th className="border px-4 py-2">Actions</th>
@@ -90,8 +95,22 @@ export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
               <tr key={moto.id}>
                 <td className="border px-4 py-2">{moto.fk_model ? moto.fk_model.label : ''}</td>
                 <td className="border px-4 py-2">{moto.serial_number}</td>
-                <td className="border px-4 py-2">{moto.fk_dealer ? moto.fk_dealer.name : ''}</td>
+                <td className="border px-4 py-2">{moto.next_service ? 
+                  <ul>
+                    <li>Distance: {moto.next_service.distance_interval}</li>
+                    <li>Temps : {moto.next_service.distance_interval ? moto.next_service.distance_interval + " mois" : "Non défini"}</li>
+                    <li>Prix : {moto.next_service.price}</li>
+                    <li>Entretien numéro : {moto.next_service.position}</li>
+                  </ul>
+                  :
+                  "Pas d'entretien prévu"
+                }</td>
+                {company_type == "Concessionnaire" ? (
                 <td className="border px-4 py-2">{moto.fk_owner ? (moto.fk_owner.last_name.toUpperCase() + ' ' + moto.fk_owner.first_name) : ''}</td>
+                ) : 
+                (
+                  <td className="border px-4 py-2">{moto.fk_dealer ? moto.fk_dealer.name : ''}</td>
+                )}
                 {company_type == "Concessionnaire" && !isAdmin && (
 
                 <td className="border px-4 py-2">
