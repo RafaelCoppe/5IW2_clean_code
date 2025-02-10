@@ -27,7 +27,7 @@ export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
   const company_type = user.fk_company.type;
 
   useEffect(() => {
-    api.get("moto")
+    api.get(company_type == "Concessionnaire" ? "moto/dealer/" + user.fk_company.id : "moto/owner/" + user.id)
       .then((response) => setMotorcycles(response.data))
       .catch(console.error);
   }, [api]);
@@ -60,15 +60,15 @@ export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
       <h1 className="text-3xl font-bold mb-6">Gestion des motos</h1>
       {company_type == "Concessionnaire" && (
 
-      <div className="flex justify-end mb-4">
-        <button
-          onClick={() => navigate('/motorcycles/add')}
-          className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500"
-        >
-          Ajouter une moto
-        </button>
-      </div>
-        )}
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={() => navigate('/motorcycles/add')}
+            className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500"
+          >
+            Ajouter une moto
+          </button>
+        </div>
+      )}
       <div className="bg-white shadow-md rounded-lg p-4">
         <h2 className="text-2xl font-bold mb-4">Liste des motos</h2>
         <table className="table-auto w-full border-collapse border border-gray-300">
@@ -76,12 +76,16 @@ export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
             <tr>
               <th className="border px-4 py-2">Modèle</th>
               <th className="border px-4 py-2">Numéro de série</th>
-              <th className="border px-4 py-2">Concessionnaire</th>
-              <th className="border px-4 py-2">Propriétaire</th>
+              <th className="border px-4 py-2">Prochain Entretien</th>
+              {company_type == "Concessionnaire" ? (
+                <th className="border px-4 py-2">Propriétaire</th>
+              ) : 
+              (
+                <th className="border px-4 py-2">Concessionnaire</th>
+              )}
               {company_type == "Concessionnaire" && (
-
-              <th className="border px-4 py-2">Actions</th>
-                )}
+                <th className="border px-4 py-2">Actions</th>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -89,25 +93,38 @@ export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
               <tr key={moto.id}>
                 <td className="border px-4 py-2">{moto.fk_model ? moto.fk_model.label : ''}</td>
                 <td className="border px-4 py-2">{moto.serial_number}</td>
-                <td className="border px-4 py-2">{moto.fk_dealer ? moto.fk_dealer.name : ''}</td>
-                <td className="border px-4 py-2">{moto.fk_owner ? (moto.fk_owner.last_name.toUpperCase() + ' ' + moto.fk_owner.first_name) : ''}</td>
-                {company_type == "Concessionnaire" && (
-
-                <td className="border px-4 py-2">
-                  <button
-                    onClick={() => handleEdit(moto.id)}
-                    className="bg-blue-600 text-white px-3 py-1 rounded mr-2 hover:bg-blue-500"
-                  >
-                    Modifier
-                  </button>
-                  <button
-                    onClick={() => handleDelete(moto.id)}
-                    className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-500"
-                  >
-                    Supprimer
-                  </button>
-                </td>
-                    )}
+                <td className="border px-4 py-2">{moto.next_service ? 
+                  <ul>
+                    <li>Distance: {moto.next_service.distance_interval}</li>
+                    <li>Temps : {moto.next_service.distance_interval ? moto.next_service.distance_interval + " mois" : "Non défini"}</li>
+                    <li>Prix : {moto.next_service.price}</li>
+                    <li>Entretien numéro : {moto.next_service.position}</li>
+                  </ul>
+                  :
+                  "Pas d'entretien prévu"
+                }</td>
+                {company_type == "Concessionnaire" ? (
+                  <>
+                  <td className="border px-4 py-2">{moto.fk_owner ? (moto.fk_owner.last_name.toUpperCase() + ' ' + moto.fk_owner.first_name) : ''}</td>
+                  <td className="border px-4 py-2">
+                    <button
+                      onClick={() => handleEdit(moto.id)}
+                      className="bg-blue-600 text-white px-3 py-1 rounded mr-2 hover:bg-blue-500"
+                    >
+                      Modifier
+                    </button>
+                    <button
+                      onClick={() => handleDelete(moto.id)}
+                      className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-500"
+                    >
+                      Supprimer
+                    </button>
+                  </td>
+                  </>
+                ) : 
+                (
+                  <td className="border px-4 py-2">{moto.fk_dealer ? moto.fk_dealer.name : ''}</td>
+                )}
               </tr>
             ))}
           </tbody>
