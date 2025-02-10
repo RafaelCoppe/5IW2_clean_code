@@ -8,9 +8,10 @@ INSERT INTO company (id, name, fk_type, address, number, city, citycode, contact
   , ('9521c673-3135-4512-bf8b-5809b18eef3a', 'SAS livraisons Didier', 2, 'rue de la République', '10', 'Marseille', '13000', 'Henry', 'Didier', 'henry.didier.livraison@gmail.com', '03 44 53 64 93');
 
 -- Utilisateurs
-INSERT INTO app_user (id, first_name, last_name, email, phone, password, fk_company) 
-  VALUES ('fb913537-12cf-446c-88d0-1d1e9cb2e24b', 'Jean', 'Druet', 'jeandruet@voituresdruet.com', '01 02 03 04 05', '$2y$10$44C.N29pcYNMIvDQaJ8LEeHB5GoYpic9LyiVNN/5/spsrRVSPqI.C', '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8') -- Concessionnaire
-  , ('be326539-c9de-4dcb-a979-1933995e9df4', 'Henry', 'Didier', 'henry.didier.livraison@gmail.com', '03 44 53 64 93', '$2y$10$44C.N29pcYNMIvDQaJ8LEeHB5GoYpic9LyiVNN/5/spsrRVSPqI.C', '9521c673-3135-4512-bf8b-5809b18eef3a'); -- Partenaire
+INSERT INTO app_user (id, first_name, last_name, email, phone, password, is_admin, fk_company) 
+  VALUES ('fb913537-12cf-446c-88d0-1d1e9cb2e24b', 'Jean', 'Druet', 'jeandruet@voituresdruet.com', '01 02 03 04 05', '$2y$10$44C.N29pcYNMIvDQaJ8LEeHB5GoYpic9LyiVNN/5/spsrRVSPqI.C', false, '2bbe6bdc-6aee-42d9-bfd6-c303826eaea8') -- Concessionnaire
+  , ('be326539-c9de-4dcb-a979-1933995e9df4', 'Henry', 'Didier', 'henry.didier.livraison@gmail.com', '03 44 53 64 93', '$2y$10$44C.N29pcYNMIvDQaJ8LEeHB5GoYpic9LyiVNN/5/spsrRVSPqI.C', false, '9521c673-3135-4512-bf8b-5809b18eef3a') -- Partenaire
+  , ('f7b3b3b4-1b3b-4b3b-8b3b-1b3b3b3b3b3b', 'Pierre', 'Dupont', 'pierre.dupont@gmail.com', '06 07 08 09 10', '$2y$10$44C.N29pcYNMIvDQaJ8LEeHB5GoYpic9LyiVNN/5/spsrRVSPqI.C', true, '6e7f2bb7-411d-4cf4-9f6e-cc51ca726143'); -- Admin
 
 
 -- Catégories de modèles de moto

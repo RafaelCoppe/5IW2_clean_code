@@ -12,6 +12,7 @@ const handleDisconnect = () => {
 
 export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
   const company_type = user.fk_company.type;
+  console.log("user", user);
 
   return (
     <aside className="fixed h-screen w-64 bg-gray-900 text-white flex flex-col">
@@ -82,6 +83,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
               </Link>
             </li>
           )}
+          
           {user.is_admin && (
           <li>
             <Link

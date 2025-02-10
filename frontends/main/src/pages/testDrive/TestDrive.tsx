@@ -71,24 +71,6 @@ const TestDrives: React.FC = () => {
     navigate(`/test-drives/add`);
   };
 
-  const handleDeleteAll = async () => {
-    if (window.confirm("Voulez-vous vraiment supprimer tous les Test Drives ?")) {
-      try {
-        const response = await api.delete('testdrive');
-        if (response.status === 200) {
-          setTestDrives([]);
-          console.log('Tous les Test Drives ont été supprimés');
-        } else {
-          console.error('Erreur lors de la suppression :', response.data);
-          alert('Erreur lors de la suppression.');
-        }
-      } catch (error) {
-        console.error('Erreur :', error);
-        alert('Erreur lors de la suppression.');
-      }
-    }
-  };
-
   const formatDuration = (minutes: number) => {
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
@@ -107,12 +89,6 @@ const TestDrives: React.FC = () => {
           className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500"
         >
           Ajouter un Test Drive
-        </button>
-        <button
-          onClick={handleDeleteAll}
-          className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-500 ml-2"
-        >
-          Supprimer tous les Test Drives
         </button>
       </div>
         )}

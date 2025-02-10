@@ -22,6 +22,7 @@ export class UserService {
       email: user.email,
       password: user.password,
       name: user.last_name + ' ' + user.first_name,
+      is_admin: user.is_admin,
       fk_company: {
         id: user.fk_company.id,
         name: user.fk_company.name,

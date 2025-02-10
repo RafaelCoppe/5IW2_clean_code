@@ -30,7 +30,7 @@ const DriverFormPage: React.FC = () => {
     api.get('user', { credentials: 'include' })
       .then((response) => {
         //filter user who is currently connected
-        const filteredUsers = response.data.filter((user: any) => user.driver === null && user.driver.fk_user !== user_id);
+        const filteredUsers = response.data.filter((user: any) => user.driver === null && user.id !== user_id);
         setUsers(filteredUsers);
       })
       .catch(console.error);
