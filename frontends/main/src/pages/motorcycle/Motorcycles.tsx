@@ -28,7 +28,7 @@ export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
   const company_type = user.fk_company.type;
 
   useEffect(() => {
-    api.get("moto")
+    api.get(company_type == "Concessionnaire" ? "moto/dealer/" + user.fk_company.id : "moto/owner/" + user.id)
       .then((response) => setMotorcycles(response.data))
       .catch(console.error);
   }, [api]);
@@ -61,15 +61,15 @@ export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
       <h1 className="text-3xl font-bold mb-6">Gestion des motos</h1>
       {company_type == "Concessionnaire" && !isAdmin && (
 
-      <div className="flex justify-end mb-4">
-        <button
-          onClick={() => navigate('/motorcycles/add')}
-          className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500"
-        >
-          Ajouter une moto
-        </button>
-      </div>
-        )}
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={() => navigate('/motorcycles/add')}
+            className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500"
+          >
+            Ajouter une moto
+          </button>
+        </div>
+      )}
       <div className="bg-white shadow-md rounded-lg p-4">
         <h2 className="text-2xl font-bold mb-4">Liste des motos</h2>
         <table className="table-auto w-full border-collapse border border-gray-300">

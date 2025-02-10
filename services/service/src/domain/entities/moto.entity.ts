@@ -42,6 +42,7 @@ export class Moto {
   @ManyToOne(() => MotoModelService, (service) => service.id, {
     nullable: true,
   })
+  @JoinColumn({ name: 'next_service' })
   next_service: MotoModelService;
 
   @ManyToOne(() => Company, (owner) => owner.id)
