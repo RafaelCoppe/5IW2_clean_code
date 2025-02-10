@@ -60,12 +60,6 @@ const Company: React.FC = () => {
     navigate(`/companies/add`);
   };
 
-  // Handle delete all companies
-  const handleDeleteAll = () => {
-    if (window.confirm('Voulez-vous vraiment supprimer toutes les entreprises ?')) {
-      setCompanies([]); // Delete all locally
-    }
-  };
 
   return (
     <div className="p-4 bg-gray-100 min-h-screen">
@@ -77,12 +71,6 @@ const Company: React.FC = () => {
           className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-blue-500"
         >
           Ajouter une entreprise
-        </button>
-        <button
-          onClick={handleDeleteAll}
-          className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-500 ml-2"
-        >
-          Supprimer toutes les entreprises
         </button>
       </div>
 

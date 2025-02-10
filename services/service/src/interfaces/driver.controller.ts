@@ -14,6 +14,12 @@ export class DriverController {
     return this.driverService.createUser(createDriverDto);
   }
 
+  @Patch('activate/:id')
+  async activateUser(@Param('id') id: string) {
+    await this.driverService.activateUser(id);
+    return { message: `Driver with ID ${id} activated successfully` };
+  }
+
   @Patch(':id')
   async updateUser(
     @Param('id') id: string,

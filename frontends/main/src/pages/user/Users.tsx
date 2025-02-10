@@ -51,26 +51,6 @@ const Users: React.FC = () => {
     navigate(`/users/add`);
   };
 
-  // Handle delete all users
-  const handleDeleteAll = async () => {
-    if (window.confirm("Voulez-vous vraiment supprimer tous les utilisateurs ?")) {
-      try {
-        const response = await api.delete('user');
-        if (response.status === 200) {
-          setUsers([]); // Delete all locally
-          console.log('Tous les utilisateurs ont été supprimés');
-        } else {
-          const errorText = await response.data;
-          console.error('Erreur lors de la suppression de tous les utilisateurs:', errorText);
-          alert('Erreur lors de la suppression de tous les utilisateurs.');
-        }
-      } catch (error) {
-        console.error('Erreur :', error);
-        alert('Erreur lors de la suppression de tous les utilisateurs.');
-      }
-    }
-  };
-
   return (
     <div className="p-4 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-bold mb-6">Utilisateurs</h1>
@@ -81,12 +61,6 @@ const Users: React.FC = () => {
           className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500"
         >
           Ajouter un utilisateur
-        </button>
-        <button
-          onClick={handleDeleteAll}
-          className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-500 ml-2"
-        >
-          Supprimer tous les utilisateurs
         </button>
       </div>
 

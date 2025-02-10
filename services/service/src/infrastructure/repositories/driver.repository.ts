@@ -16,6 +16,14 @@ export class DriverRepository {
     });
   }
 
+  async activate(id: string): Promise<void> {
+    await this.repository.update(id, {
+      fk_status: {
+        id: 1,
+      },
+    });
+  }
+
   async create(driver: Partial<Driver>): Promise<Driver> {
     return this.repository.save(driver);
   }

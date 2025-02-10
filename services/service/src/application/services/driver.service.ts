@@ -19,6 +19,11 @@ export class DriverService {
     return user;
   }
 
+  async activateUser(id: string): Promise<void> {
+    await this.getDriverById(id); // Check existence
+    await this.driverRepository.activate(id);
+  }
+
   async updateUser(
     id: string,
     updateDriverDto: UpdateDriverDto,

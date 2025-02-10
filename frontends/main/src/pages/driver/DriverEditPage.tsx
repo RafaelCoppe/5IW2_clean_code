@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useApi } from "../../context/ApiContext";
+import { useSelector } from "react-redux";
+import { RootState } from "../../services/store";
 
 interface User {
   id: string;
@@ -22,19 +24,20 @@ const DriverEditPage: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const user = useSelector((state: RootState) => state.auth.user);
+  const user_id = user.id;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Fetch users from the API
         const userResponse = await api.get('user', { credentials: 'include' });
-        const filteredUsers = userResponse.data.filter((user: any) => user.driver !== null);
+        const filteredUsers = userResponse.data.filter((user: any) => user.driver !== null && user.driver.fk_user !== user_id);
         setUsers(filteredUsers);
 
         if (id) {
           const driverData = filteredUsers.find((user: any) => user.driver.fk_user === id);
 
-          console.log('Données du conducteur :', driverData);
           if (driverData) {
             setFormData({
               fk_user: driverData.id,

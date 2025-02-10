@@ -28,6 +28,7 @@ const TestDrives: React.FC = () => {
   const navigate = useNavigate();
   const api = useApi();
   const user = useSelector((state: RootState) => state.auth.user);
+  const company_type = user.fk_company.type;
 
   useEffect(() => {
     const fetchTestDrives = async () => {
@@ -70,24 +71,6 @@ const TestDrives: React.FC = () => {
     navigate(`/test-drives/add`);
   };
 
-  const handleDeleteAll = async () => {
-    if (window.confirm("Voulez-vous vraiment supprimer tous les Test Drives ?")) {
-      try {
-        const response = await api.delete('testdrive');
-        if (response.status === 200) {
-          setTestDrives([]);
-          console.log('Tous les Test Drives ont été supprimés');
-        } else {
-          console.error('Erreur lors de la suppression :', response.data);
-          alert('Erreur lors de la suppression.');
-        }
-      } catch (error) {
-        console.error('Erreur :', error);
-        alert('Erreur lors de la suppression.');
-      }
-    }
-  };
-
   const formatDuration = (minutes: number) => {
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
@@ -97,22 +80,18 @@ const TestDrives: React.FC = () => {
   return (
     <div className="p-4 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-bold mb-6">Test Drives</h1>
+      {company_type == "Concessionnaire" && (
 
       <div className="flex justify-end mb-4">
+        
         <button
           onClick={handleAdd}
           className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500"
         >
           Ajouter un Test Drive
         </button>
-        <button
-          onClick={handleDeleteAll}
-          className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-500 ml-2"
-        >
-          Supprimer tous les Test Drives
-        </button>
       </div>
-
+        )}
       <div className="bg-white shadow-md rounded-lg p-4">
         <h2 className="text-2xl font-bold mb-4">Liste des Test Drives</h2>
         <table className="table-auto w-full border-collapse border border-gray-300">
@@ -122,7 +101,9 @@ const TestDrives: React.FC = () => {
               <th className="border px-4 py-2">Véhicule</th>
               <th className="border px-4 py-2">Date</th>
               <th className="border px-4 py-2">Durée</th>
+              {company_type == "Concessionnaire" && (
               <th className="border px-4 py-2">Actions</th>
+                )}
             </tr>
           </thead>
           <tbody>
@@ -132,6 +113,7 @@ const TestDrives: React.FC = () => {
                 <td className="border px-4 py-2">{td.fk_moto.serial_number}</td>
                 <td className="border px-4 py-2">{format(new Date(td.date), 'dd/MM/yyyy')}</td>
                 <td className="border px-4 py-2">{formatDuration(Number(td.duration))}</td>
+                {company_type == "Concessionnaire" && (
                 <td className="border px-4 py-2">
                   <button
                     onClick={() => handleEdit(td.id)}
@@ -146,6 +128,7 @@ const TestDrives: React.FC = () => {
                     Supprimer
                   </button>
                 </td>
+                    )}
               </tr>
             ))}
           </tbody>

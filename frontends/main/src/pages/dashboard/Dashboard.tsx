@@ -10,10 +10,14 @@ import {
 } from "recharts";
 import { Bike, Users, Wrench, Activity, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../services/store";
 
 const DashboardMotos: React.FC = () => {
   const api = useApi();
   const navigate = useNavigate();
+  const user = useSelector((state: RootState) => state.auth.user);
+  const company_type = user.fk_company.type;
 
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
@@ -66,12 +70,14 @@ const DashboardMotos: React.FC = () => {
     <div className="p-6 bg-gray-100 min-h-screen">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Dashboard Gestion de Flotte</h1>
+        {company_type == "Concessionnaire" && (
         <button
           onClick={() => navigate("/motorcycles/add")}
           className="bg-blue-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-blue-500"
         >
           <Plus size={18} /> Ajouter une moto
         </button>
+        )}
       </div>
 
       {/* Statistiques */}
