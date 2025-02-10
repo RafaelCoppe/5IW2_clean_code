@@ -67,12 +67,6 @@ export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
         >
           Ajouter une moto
         </button>
-        <button
-          onClick={() => setMotorcycles([])}
-          className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-500 ml-2"
-        >
-          Supprimer toutes les motos
-        </button>
       </div>
         )}
       <div className="bg-white shadow-md rounded-lg p-4">

@@ -26,9 +26,7 @@ export const Driver: React.FC = () => {
     api.get("user", { credentials: 'include' })
       .then((response) => {
         const filteredUsers = response.data.filter((user: any) => 
-          user.driver !== null &&
-          user.driver.fk_status &&
-          user.driver.fk_status.id === 1
+          user.driver !== null
         );
         console.log('Conducteurs :', filteredUsers);
 
@@ -74,6 +72,15 @@ export const Driver: React.FC = () => {
     }
   };
 
+  const handleActivate = async (id: string) => {
+    if (window.confirm("Voulez-vous vraiment réactiver ce conducteur ?")) {
+      await api.patch(`driver/activate/${id}`)
+        .catch(console.error);
+
+        window.location.reload();
+    }
+  }
+
   const handleEdit = (id: string) => {
     navigate(`/drivers/edit/${id}`);
   };
@@ -99,28 +106,41 @@ export const Driver: React.FC = () => {
               <th className="border px-4 py-2">Nom</th>
               <th className="border px-4 py-2">Lien du permis</th>
               <th className="border px-4 py-2">Expérience</th>
+              <th className="border px-4 py-2">Status</th>
               <th className="border px-4 py-2">Actions</th>
             </tr>
           </thead>
           <tbody>
             {drivers.map((driver) => (
-              <tr key={driver.fk_user.id}>
+              <tr key={driver.fk_user.id} className={driver.fk_status.id != 1 ? 'bg-red-100' : ''}>
                 <td className="border px-4 py-2">{driver.fk_user.last_name.toUpperCase()} {driver.fk_user.first_name}</td>
                 <td className="border px-4 py-2">{driver.license_link}</td>
                 <td className="border px-4 py-2">{driver.experience}</td>
+                <td className="border px-4 py-2">{driver.fk_status.name}</td>
                 <td className="border px-4 py-2">
-                  <button
-                    onClick={() => handleEdit(driver.fk_user.id)}
-                    className="bg-blue-600 text-white px-3 py-1 rounded mr-2 hover:bg-blue-500"
-                  >
-                    Modifier
-                  </button>
-                  <button
-                    onClick={() => handleDelete(driver.fk_user.id)}
-                    className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-500"
-                  >
-                    Supprimer
-                  </button>
+                  {driver.fk_status.id != 1 ? (
+                    <button
+                      onClick={() => handleActivate(driver.fk_user.id)}
+                      className="bg-green-600 text-white px-3 py-1 rounded mr-2 hover:bg-green-500"
+                      >
+                      Réactiver
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => handleEdit(driver.fk_user.id)}
+                        className="bg-blue-600 text-white px-3 py-1 rounded mr-2 hover:bg-blue-500"
+                      >
+                        Modifier
+                      </button>
+                      <button
+                        onClick={() => handleDelete(driver.fk_user.id)}
+                        className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-500"
+                      >
+                        Supprimer
+                      </button>
+                    </>
+                  )}
                 </td>
               </tr>
             ))}

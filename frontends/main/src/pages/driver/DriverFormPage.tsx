@@ -30,7 +30,7 @@ const DriverFormPage: React.FC = () => {
     api.get('user', { credentials: 'include' })
       .then((response) => {
         //filter user who is currently connected
-        const filteredUsers = response.data.filter((user: any) => user.driver === null || user.driver.fk_user !== user_id);
+        const filteredUsers = response.data.filter((user: any) => user.driver === null && user.driver.fk_user !== user_id);
         setUsers(filteredUsers);
       })
       .catch(console.error);
@@ -50,7 +50,6 @@ const DriverFormPage: React.FC = () => {
     try {
         const existingUser = users.find(user => user.id === formData.fk_user);
         if (existingUser && existingUser.driver) {
-          console.log("ce scénario est pour la mise à jour d'un conducteur existant");
           // Update existing driver record
           const dataToSend = {
             license_link: formData.license_link,

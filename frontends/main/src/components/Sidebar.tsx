@@ -82,7 +82,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
               </Link>
             </li>
           )}
-          
           {user.is_admin && (
           <li>
             <Link

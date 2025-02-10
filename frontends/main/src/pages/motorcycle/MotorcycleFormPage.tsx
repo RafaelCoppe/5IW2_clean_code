@@ -26,8 +26,6 @@ const MotorcycleFormPage: React.FC = () => {
     capacity: '',
     year: '',
     warranty_end: '',
-    next_service_date: '',
-    next_service_distance: '',
     fk_model: '',
     fk_dealer: '',
     fk_owner: '',
@@ -72,8 +70,6 @@ const MotorcycleFormPage: React.FC = () => {
         capacity: parseInt(formData.capacity, 10),
         year: parseInt(formData.year, 10),
         warranty_end: formData.warranty_end,
-        next_service_date: formData.next_service_date,
-        next_service_distance: parseInt(formData.next_service_distance, 10),
         fk_model: { id: parseInt(formData.fk_model, 10) },
         fk_dealer: { id: formData.fk_dealer },
         fk_owner: formData.fk_owner ? { id: formData.fk_owner } : null,
@@ -154,26 +150,6 @@ const MotorcycleFormPage: React.FC = () => {
             type="date"
             value={formData.warranty_end}
             onChange={(e) => setFormData({ ...formData, warranty_end: e.target.value })}
-            className="w-full border p-2 rounded-md"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-2">Date du prochain service</label>
-          <input
-            type="date"
-            value={formData.next_service_date}
-            onChange={(e) => setFormData({ ...formData, next_service_date: e.target.value })}
-            className="w-full border p-2 rounded-md"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-2">Distance du prochain service</label>
-          <input
-            type="number"
-            value={formData.next_service_distance}
-            onChange={(e) => setFormData({ ...formData, next_service_distance: e.target.value })}
             className="w-full border p-2 rounded-md"
             required
           />
