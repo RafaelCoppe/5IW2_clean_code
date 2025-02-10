@@ -24,6 +24,7 @@ export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
   const navigate = useNavigate();
   const [motorcycles, setMotorcycles] = useState<Motorcycle[]>([]);
   const user = useSelector((state: RootState) => state.auth.user);
+  const isAdmin = user.is_admin;
   const company_type = user.fk_company.type;
 
   useEffect(() => {
@@ -58,7 +59,7 @@ export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
   return (
     <div className="p-4 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-bold mb-6">Gestion des motos</h1>
-      {company_type == "Concessionnaire" && (
+      {company_type == "Concessionnaire" && !isAdmin && (
 
         <div className="flex justify-end mb-4">
           <button
@@ -83,9 +84,10 @@ export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
               (
                 <th className="border px-4 py-2">Concessionnaire</th>
               )}
-              {company_type == "Concessionnaire" && (
-                <th className="border px-4 py-2">Actions</th>
-              )}
+              {company_type == "Concessionnaire" && !isAdmin && (
+
+              <th className="border px-4 py-2">Actions</th>
+                )}
             </tr>
           </thead>
           <tbody>
@@ -104,27 +106,28 @@ export const Motorcycles: React.FC<{ userRole: string }> = ({ userRole }) => {
                   "Pas d'entretien prévu"
                 }</td>
                 {company_type == "Concessionnaire" ? (
-                  <>
-                  <td className="border px-4 py-2">{moto.fk_owner ? (moto.fk_owner.last_name.toUpperCase() + ' ' + moto.fk_owner.first_name) : ''}</td>
-                  <td className="border px-4 py-2">
-                    <button
-                      onClick={() => handleEdit(moto.id)}
-                      className="bg-blue-600 text-white px-3 py-1 rounded mr-2 hover:bg-blue-500"
-                    >
-                      Modifier
-                    </button>
-                    <button
-                      onClick={() => handleDelete(moto.id)}
-                      className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-500"
-                    >
-                      Supprimer
-                    </button>
-                  </td>
-                  </>
+                <td className="border px-4 py-2">{moto.fk_owner ? (moto.fk_owner.last_name.toUpperCase() + ' ' + moto.fk_owner.first_name) : ''}</td>
                 ) : 
                 (
                   <td className="border px-4 py-2">{moto.fk_dealer ? moto.fk_dealer.name : ''}</td>
                 )}
+                {company_type == "Concessionnaire" && !isAdmin && (
+
+                <td className="border px-4 py-2">
+                  <button
+                    onClick={() => handleEdit(moto.id)}
+                    className="bg-blue-600 text-white px-3 py-1 rounded mr-2 hover:bg-blue-500"
+                  >
+                    Modifier
+                  </button>
+                  <button
+                    onClick={() => handleDelete(moto.id)}
+                    className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-500"
+                  >
+                    Supprimer
+                  </button>
+                </td>
+                    )}
               </tr>
             ))}
           </tbody>

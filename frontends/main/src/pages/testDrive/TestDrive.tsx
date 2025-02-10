@@ -16,11 +16,11 @@ interface TestDrive {
   duration: string;
   fk_moto: {
     serial_number: string;
-  };
+  } | null;
   fk_driver: {
     first_name: string;
     last_name: string;
-  };
+  } | null;
 }
 
 const TestDrives: React.FC = () => {
@@ -29,21 +29,21 @@ const TestDrives: React.FC = () => {
   const api = useApi();
   const user = useSelector((state: RootState) => state.auth.user);
   const company_type = user.fk_company.type;
+  const isAdmin = user.is_admin;
 
   useEffect(() => {
     const fetchTestDrives = async () => {
-      if (user && user.fk_company.id) {
-        try {
-          const response = await api.get(`test_drive/company/${user.fk_company.id}`, { credentials: 'include' });
-          setTestDrives(response.data);
-        } catch (error) {
-          console.error('Erreur lors de la récupération des Test Drives :', error);
-        }
+      try {
+        const endpoint = isAdmin ? 'test_drive' : `test_drive/company/${user.fk_company.id}`;
+        const response = await api.get(endpoint, { credentials: 'include' });
+        setTestDrives(response.data);
+      } catch (error) {
+        console.error('Erreur lors de la récupération des Test Drives :', error);
       }
     };
 
     fetchTestDrives();
-  }, [api, user]);
+  }, [api, user, isAdmin]);
 
   const handleDelete = async (id: number) => {
     if (window.confirm("Voulez-vous vraiment supprimer ce Test Drive ?")) {
@@ -80,18 +80,16 @@ const TestDrives: React.FC = () => {
   return (
     <div className="p-4 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-bold mb-6">Test Drives</h1>
-      {company_type == "Concessionnaire" && (
-
-      <div className="flex justify-end mb-4">
-        
-        <button
-          onClick={handleAdd}
-          className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500"
-        >
-          Ajouter un Test Drive
-        </button>
-      </div>
-        )}
+      {company_type === "Concessionnaire" && !isAdmin && (
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={handleAdd}
+            className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500"
+          >
+            Ajouter un Test Drive
+          </button>
+        </div>
+      )}
       <div className="bg-white shadow-md rounded-lg p-4">
         <h2 className="text-2xl font-bold mb-4">Liste des Test Drives</h2>
         <table className="table-auto w-full border-collapse border border-gray-300">
@@ -101,34 +99,38 @@ const TestDrives: React.FC = () => {
               <th className="border px-4 py-2">Véhicule</th>
               <th className="border px-4 py-2">Date</th>
               <th className="border px-4 py-2">Durée</th>
-              {company_type == "Concessionnaire" && (
-              <th className="border px-4 py-2">Actions</th>
-                )}
+              {company_type === "Concessionnaire" && !isAdmin && (
+                <th className="border px-4 py-2">Actions</th>
+              )}
             </tr>
           </thead>
           <tbody>
             {testDrives.map((td) => (
               <tr key={td.id}>
-                <td className="border px-4 py-2">{td.fk_driver.first_name} {td.fk_driver.last_name}</td>
-                <td className="border px-4 py-2">{td.fk_moto.serial_number}</td>
+                <td className="border px-4 py-2">
+                  {td.fk_driver ? `${td.fk_driver.first_name} ${td.fk_driver.last_name}` : "N/A"}
+                </td>
+                <td className="border px-4 py-2">
+                  {td.fk_moto ? td.fk_moto.serial_number : "N/A"}
+                </td>
                 <td className="border px-4 py-2">{format(new Date(td.date), 'dd/MM/yyyy')}</td>
                 <td className="border px-4 py-2">{formatDuration(Number(td.duration))}</td>
-                {company_type == "Concessionnaire" && (
-                <td className="border px-4 py-2">
-                  <button
-                    onClick={() => handleEdit(td.id)}
-                    className="bg-blue-600 text-white px-3 py-1 rounded mr-2 hover:bg-blue-500"
-                  >
-                    Modifier
-                  </button>
-                  <button
-                    onClick={() => handleDelete(td.id)}
-                    className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-500"
-                  >
-                    Supprimer
-                  </button>
-                </td>
-                    )}
+                {company_type === "Concessionnaire" && !isAdmin && (
+                  <td className="border px-4 py-2">
+                    <button
+                      onClick={() => handleEdit(td.id)}
+                      className="bg-blue-600 text-white px-3 py-1 rounded mr-2 hover:bg-blue-500"
+                    >
+                      Modifier
+                    </button>
+                    <button
+                      onClick={() => handleDelete(td.id)}
+                      className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-500"
+                    >
+                      Supprimer
+                    </button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
